@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   height: 52px;
+  flex-direction: row;
   //width: 100%;
   background-color: #686794;
   margin-top: 0 !important;
@@ -10,6 +11,7 @@
 }
 
 .avatar {
+  display: flex;
   height: 36px !important;
   width: 36px !important;
   font-size: 16px !important;
@@ -24,6 +26,7 @@
 }
 
 .user__info {
+  display: flex;
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -35,16 +38,18 @@
 .exit__btn {
   display: flex;
   align-items: center;
-  margin: 0 auto;
   background: none;
   border: none;
   height: 36px;
   width: 36px;
-  right: 0;
-
   &:hover{
     border-radius: 4px;
     cursor: pointer;
     background: #606088;
+  }
+
+  &__area{
+    display: flex;
+    justify-content: flex-end;
   }
 }

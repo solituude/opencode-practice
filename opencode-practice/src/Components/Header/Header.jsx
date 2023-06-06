@@ -12,22 +12,22 @@ const userData = {
 }
 
 const Header = () => {
-    return(
+    return (
         <Row className={s.container}>
             <Col className={s.user__container} xs={11}>
-                <Avatar className={s.avatar} sx={{ bgcolor: "#ECECF8", color: "#686794"}}> {userData.name[0]}{userData.surname[0]} </Avatar>
+                <Avatar className={s.avatar} sx={{bgcolor: "#ECECF8", color: "#686794"}}>
+                    {userData.name[0]}{userData.surname[0]}
+                </Avatar>
 
                 <h3 className={s.user__info}>
                     {userData.surname} {userData.name} {userData.patronymic}
                 </h3>
             </Col>
-
-            <Col>
+            <Col className={s.exit__btn__area}>
                 <button className={s.exit__btn}>
                     <img src={exitIcon} alt="Выход из системы"/>
                 </button>
             </Col>
-
         </Row>
     );
 }
