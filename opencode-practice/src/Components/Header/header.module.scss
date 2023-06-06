@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  //width: 100%;
+  background-color: #686794;
+  margin-top: 0 !important;
+  padding: 0 28px;
+  justify-content: space-between;
+}
+
+.avatar {
+  height: 36px !important;
+  width: 36px !important;
+  font-size: 16px !important;
+}
+
+.user__container {
+  display: flex;
+
+  &:hover {
+    cursor: default;
+  }
+}
+
+.user__info {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  margin: auto 28px;
+  color: #ECECF8;
+}
+
+.exit__btn {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  background: none;
+  border: none;
+  height: 36px;
+  width: 36px;
+  right: 0;
+
+  &:hover{
+    border-radius: 4px;
+    cursor: pointer;
+    background: #606088;
+  }
+}
