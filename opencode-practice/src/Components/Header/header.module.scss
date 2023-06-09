@@ -17,22 +17,12 @@
   font-size: 16px !important;
 }
 
-.user__container {
+.main__container {
   display: flex;
 
   &:hover {
     cursor: default;
   }
-}
-
-.user__info {
-  display: flex;
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  margin: auto 28px;
-  color: #ECECF8;
 }
 
 .exit__btn {
@@ -42,14 +32,48 @@
   border: none;
   height: 36px;
   width: 36px;
-  &:hover{
-    border-radius: 4px;
-    cursor: pointer;
-    background: #606088;
-  }
+  //&:hover{
+  //  border-radius: 4px;
+  //  cursor: pointer;
+  //  background: #acacc9;
+  //}
 
   &__area{
     display: flex;
     justify-content: flex-end;
   }
 }
+
+.dropdown {
+  &__toggle {
+    display: flex !important;
+    align-items: center;
+    background: none !important;
+    border: none !important;
+    width: 100px;
+  }
+
+  &__menu {
+    width: 280px;
+    background: #F9FAFF !important;
+  }
+
+  &__item {
+    display: flex !important;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    &:active {
+      background: blueviolet !important;
+    }
+    &:hover {
+      background: #e8e8f1 !important;
+    }
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+

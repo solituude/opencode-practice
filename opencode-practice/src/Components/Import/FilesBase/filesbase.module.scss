@@ -85,3 +85,16 @@
   background: none;
   border: none;
 }
+
+.file__table {
+  font-size: 11px;
+  border: 1px solid #999CA5;
+  border-radius: 4px;
+
+  &__col {
+    border: 1px solid #999CA5;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+}

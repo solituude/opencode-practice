@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import {CloseButton, Col, Row, Table} from "react-bootstrap";
 import s from './filesbase.module.scss';
 
-import closeIcon from '../../img/closeIcon.svg';
-import searchIcon from '../../img/searchIcon.svg';
-import cleanIcon from '../../img/cleanIcon.svg';
+import searchIcon from '../../../img/searchIcon.svg';
+
 
 const FilesBase = () => {
     const [name, setName] = useState("");
@@ -26,6 +25,23 @@ const FilesBase = () => {
         console.log(event.target.value.toString());
     }
 
+    const nameColumns = [
+        "№",
+        "Наименование",
+        "Дата создания",
+        "Файл",
+        "Дата составления ЭС",
+        "ID составления ЭС",
+        "ID получения ЭС",
+        "Код причины создания",
+        "Дата создания ЭС",
+        "Вид представления...",
+        "Дата ОД",
+        "Номер версии справ..",
+        "Признак сопоставления",
+        "Пользователь"
+    ]
+
     return (
         <Row className={s.container}>
             <Row className={s.searches__container}>
@@ -37,7 +53,7 @@ const FilesBase = () => {
                                    value={name}
                                    onChange={handleSetName}
                                    className={s.textarea}/>
-                            <img onClick={() => setName("")} src={closeIcon} alt="очистить"/>
+                            <CloseButton onClick={() => setName("")}/>
                         </div>
                     </label>
                 </Col>
@@ -50,9 +66,6 @@ const FilesBase = () => {
                                    defaultValue=""
                                    onChange={handleSetDateStart}
                                    className={s.textarea}/>
-                            {/*<img src={closeIcon}*/}
-                            {/*     onClick={() => setDateStart("")}*/}
-                            {/*     alt="Очистить"/>*/}
                         </div>
                     </label>
 
@@ -62,17 +75,25 @@ const FilesBase = () => {
                             <input type="date"
                                    onChange={handleSetDateEnd}
                                    className={s.textarea}/>
-                            {/*<img src={closeIcon} alt="Очистить"/>*/}
                         </div>
                     </label>
 
                     <button className={s.search__btn}>
                         <img src={searchIcon} alt="поиск"/>
                     </button>
-                    {/*<button className={s.search__btn}>*/}
-                    {/*    <img src={cleanIcon} alt="очистить"/>*/}
-                    {/*</button>*/}
                 </Col>
+            </Row>
+            <Row>
+
+            </Row>
+            <Row>
+                <Table className={s.file__table}>
+                    <thead>
+                        {nameColumns.map((item) => (
+                            <th className={s.file__table__col}>{item}</th>
+                        ))}
+                    </thead>
+                </Table>
             </Row>
         </Row>
     );
