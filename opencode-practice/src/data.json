@@ -1,0 +1,103 @@
+[
+  {
+    "ED807": {
+      "BICDirectoryEntry": [
+        {
+          "ParticipantInfo": {
+            "NameP": "УФК по Астраханской области",
+            "CntrCd": "RU",
+            "Rgn": "12",
+            "Ind": "414056",
+            "Tnp": "г",
+            "Nnp": "Астрахань",
+            "Adr": "ул Латышева, 6 Г",
+            "DateIn": "2010-06-08",
+            "PtType": "52",
+            "Srvcs": "3",
+            "XchType": "1",
+            "ID": "1280002005",
+            "ParticipantStatus": "PSAC"
+          },
+          "Accounts": [
+            {
+              "Account": "40116810100000010010",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            },
+            {
+              "Account": "40116810400000010011",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            },
+            {
+              "Account": "40116810700000010012",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            },
+            {
+              "Account": "40116810000000010013",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            },
+            {
+              "Account": "40116810300000010014",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            },
+            {
+              "Account": "40116810600000010015",
+              "RegulationAccountType": "TRSA",
+              "CK": "99",
+              "AccountCBRBIC": "041280002",
+              "DateIn": "2013-01-09",
+              "AccountStatus": "ACAC"
+            }
+          ],
+          "BIC": "041280103"
+        },
+        {
+          "ParticipantInfo": {
+            "NameP": "РКЦ БИЙСК",
+            "Rgn": "01",
+            "Ind": "659300",
+            "Tnp": "г",
+            "Nnp": "Бийск",
+            "Adr": "ул. Владимира Ленина, 127",
+            "PrntBIC": "040173001",
+            "DateIn": "1994-01-20",
+            "PtType": "10",
+            "Srvcs": "3",
+            "XchType": "1",
+            "UID": "0147000000",
+            "ParticipantStatus": "PSAC"
+          },
+          "BIC": "040147000"
+        }
+      ],
+      "xmlns": "urn:cbr-ru:ed:v2.0",
+      "EDNo": "706586803",
+      "EDDate": "2023-05-30",
+      "EDAuthor": "4583001999",
+      "CreationReason": "FCBD",
+      "CreationDateTime": "2023-05-30T18:01:28Z",
+      "InfoTypeCode": "FIRR",
+      "BusinessDay": "2023-05-31",
+      "DirectoryVersion": "1"
+    }
+  }
+]

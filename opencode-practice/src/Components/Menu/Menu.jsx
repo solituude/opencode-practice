@@ -98,7 +98,7 @@ const Menu = () => {
 
                         
                             {/* <ListItemButton onClick={() => setIsOpenMenu(false)}> */}
-                            <NavLink to="/import" style={{ textDecoration: 'none', color: '#303752' }}>
+                            <NavLink to="/ed807" style={{ textDecoration: 'none', color: '#303752' }}>
                                 <ListItemButton onClick={() => setIsOpenMenu(false)}>
                                     <ListItemIcon>
                                         <img src={downloadIcon} alt="import" />

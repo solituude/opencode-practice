@@ -3,7 +3,7 @@ import Header from "./Components/Header/Header";
 import {Container} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import Import from "./Components/Import/Import";
+import FilesBase from './Components/FilesBase/FilesBase';
 import AccountStatus from "./Components/Directories/AccountStatus/AccountStatus";
 import AccountTypeInAccordanceWithStandards
     from "./Components/Directories/AccountTypeInAccordanceWithStandard/AccountTypeInAccordanceWithStandarts";
@@ -20,15 +20,17 @@ import RestrictionsOnMoneyTransferServices
 import TypeOfInformationPresentation
     from "./Components/Directories/TypeOfInformationPresentation/TypeOfInformationPresentation";
 import TypeOfTransferParticipant from "./Components/Directories/TypeOfTransferParticipant/TypeOfTransferParticipant";
+import DataBase from "./Components/DataBase/DataBase";
 
 function App() {
     return (
-        <Container fluid>
+        <Container fluid className="content">
             <BrowserRouter>
                 <Header/>
                 <Routes>
-                    <Route path="/" element={<Import/>}/>
-                    <Route path='/import' element={<Import/>}/>
+                    <Route path="/" element={<FilesBase/>}/>
+                    <Route path='/ed807' element={<FilesBase/>}/>
+                    <Route path='/bics' element={<DataBase/>}/>
                     <Route path='/directories/accountStatus' element={<AccountStatus/>}/>
                     <Route path='/directories/accountTypeWithStandards'
                            element={<AccountTypeInAccordanceWithStandards/>}/>

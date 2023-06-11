@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 import s from './header.module.scss';
-import {Avatar, Button, Drawer, Box} from "@mui/material";
+import {Avatar} from "@mui/material";
 import {Col, Row, Dropdown} from "react-bootstrap";
-
 import exitIcon from '../../img/exitIcon.svg';
-import menuIcon from '../../img/menuIcon.svg';
-import {NavLink} from "react-router-dom";
 import Menu from "../Menu/Menu";
 
 const userData = {
