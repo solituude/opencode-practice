@@ -1,4 +1,4 @@
-.container {
+.main__container {
   display: flex;
   //width: 100vw;
   height: calc(100vh - 52px);
@@ -9,7 +9,8 @@
   //box-sizing: border-box;
 }
 
-.searches__container {
+
+.search__container {
   display: flex;
   //width: 100%;
   align-items: center;
@@ -20,7 +21,7 @@
   color: #303752;
 }
 
-.name__search {
+.search__item {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -39,7 +40,7 @@
     border: 0;
     height: 20px;
     width: 100%;
-    background: #F9FAFF;
+    background: #F9FAFF !important;
     border-radius: 4px;
     font-size: 14px;
     font-family: Roboto, sans-serif;
@@ -61,72 +62,19 @@
   }
 }
 
-.date__container {
+.edit__area {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
-  height: 36px;
-  gap: 10px;
-
-}
-
-.date__search {
-  display: flex;
-  font-family: Roboto, sans-serif;
+  height: 28px;
+  background: #CECEE4;
   color: #303752;
-  font-size: 14px;
-  align-items: center;
-  &__textarea{
-    @extend .name__search__textarea;
-    width: 180px;
-  }
 }
 
-.search__btn {
-  display: flex;
-  background: none;
-  border: none;
-}
-
-.file__content {
-  display: flex;
-  align-items: flex-start;
-  padding: 0 !important;
-}
-
-.file__table {
-  //display: flex;
+.table {
   font-size: 11px;
   padding: 0 !important;
-  //border: 1px solid #999CA5;
-
   &__col {
     border: 1px solid #999CA5;
     text-align: center;
   }
-
-}
-
-th {
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 11px;
-}
-
-tr {
-  vertical-align: center;
-  padding: 1px !important;
-}
-
-
-td {
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 11px;
-  border: 1px solid #999CA5;
-  text-align: center;
-  padding: 2px !important;
 }
