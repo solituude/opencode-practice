@@ -32,7 +32,7 @@
   align-items: center;
   height: 36px;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   font-family: Roboto, sans-serif;
   color: #303752;
 
@@ -47,7 +47,7 @@
     width: 100%;
     background: #F9FAFF;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 12px;
     font-family: Roboto, sans-serif;
     justify-content: space-between;
   }
@@ -81,7 +81,7 @@
   display: flex;
   font-family: Roboto, sans-serif;
   color: #303752;
-  font-size: 14px;
+  font-size: 12px;
   align-items: center;
   &__textarea{
     @extend .name__search__textarea;
@@ -119,6 +119,7 @@ th {
   font-style: normal;
   font-weight: 700;
   font-size: 11px;
+  border: 1px;
 }
 
 tr {
@@ -134,16 +135,47 @@ td {
   font-size: 11px;
   border: 1px solid #999CA5;
   text-align: center;
-  padding: 2px !important;
+  //padding: 2px !important;
 }
 
 .table__acc {
   font-size: 11px;
+
 
   &__header {
     //white-space: nowrap; /* Запрещает перенос текста */
     overflow: hidden; /* Скрывает выходящий за границы контейнера текст */
     text-overflow: ellipsis;
     padding: 0 !important;
+    border: 1px solid #999CA5 !important;
+    text-align: center !important;
+    background: #ECECF8;
+  }
+}
+
+.tr {
+  padding: 2px !important;
+}
+
+.return__back {
+  height: 30px;
+  font-size: 14px;
+  background: #CECEE4;
+  display: flex;
+  padding: 4px 36px;
+
+  &__btn {
+    display: flex;
+    width: fit-content;
+    color: #303752;
+    background: none;
+    border: none;
+    gap: 12px;
+    align-items: center;
+
+    &:hover {
+      background: #b6b6ce;
+      border-radius: 4px;
+    }
   }
 }

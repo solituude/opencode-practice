@@ -23,10 +23,11 @@
 .name__search {
   box-sizing: border-box;
   display: flex;
+  padding-left: 16px;
   align-items: center;
   height: 36px;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   font-family: Roboto, sans-serif;
   color: #303752;
 
@@ -41,7 +42,7 @@
     width: 100%;
     background: #F9FAFF;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 12px;
     font-family: Roboto, sans-serif;
     justify-content: space-between;
   }
@@ -75,7 +76,7 @@
   display: flex;
   font-family: Roboto, sans-serif;
   color: #303752;
-  font-size: 14px;
+  font-size: 12px;
   align-items: center;
   &__textarea{
     @extend .name__search__textarea;
@@ -121,7 +122,7 @@ tr {
 }
 
 
-td {
+.td {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -130,3 +131,29 @@ td {
   text-align: center;
   padding: 2px !important;
 }
+
+.action__field {
+  height: 24px;
+  background: #CECEE4;
+  display: flex;
+  flex-direction: row;
+  padding: 0 16px;
+  gap: 24px;
+
+  &__btn {
+    display: flex;
+    height: 22px;
+    gap: 4px;
+    width: fit-content;
+    color: #7D8295;
+    background: none;
+    border: none;
+
+    &:hover {
+      background: #b6b6ce;
+      color: #303752;
+      border-radius: 4px;
+    }
+  }
+}
+

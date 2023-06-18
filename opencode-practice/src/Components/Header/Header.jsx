@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import s from './header.module.scss';
 import {Avatar} from "@mui/material";
 import {Col, Row, Dropdown} from "react-bootstrap";

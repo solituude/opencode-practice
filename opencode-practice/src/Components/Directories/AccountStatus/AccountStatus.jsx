@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {CloseButton, Container, Row, Table} from "react-bootstrap";
 import s from '../directories.module.scss';
-import {NavLink} from "react-router-dom";
 import {Button} from "@mui/material";
 import ModalNewItem from "./ModalNewItem";
+import ModalEditItem from "./ModalEditItem";
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 const AccountStatus = () => {
     const nameCols = [
@@ -48,6 +49,7 @@ const AccountStatus = () => {
     const [name, setName] = useState("");
     const [date, setDate] = useState("");
     const [modalShow, setModalShow] = useState(false);
+    const [editModalShow, setEditModalShow] = useState(false);
     const handleSetKey = (event) => {
         setKey(event.target.value);
     }
@@ -61,14 +63,23 @@ const AccountStatus = () => {
 
 
     const [data, setData] = useState(example);
+    const [editData, setEditData] = useState({});
     const handleAddNewItem = (newData) => {
         let arr = data;
         arr.push(newData);
         setData(arr);
-        console.log(arr);
     }
 
-    return(
+    const handleEditItem = () => {
+        if (editModalShow) {
+            return (<ModalEditItem show={true}
+                                   onHide={() => setEditModalShow(false)}
+                                   data={editData}/>);
+        } else return null;
+
+    }
+
+    return (
         <Container fluid className={s.main__container}>
             <Row className={s.search__container}>
                 <label className={s.search__item}>
@@ -108,7 +119,10 @@ const AccountStatus = () => {
             </Row>
 
             <Row className={s.edit__area}>
-                <Button onClick={() => setModalShow(true)}>Новая запись</Button>
+                <button className={s.edit__area__btn}
+                        onClick={() => setModalShow(true)}>
+                    <AddRoundedIcon/>
+                    Новая запись</button>
                 <ModalNewItem
                     setNewDate={handleAddNewItem}
                     show={modalShow}
@@ -124,7 +138,11 @@ const AccountStatus = () => {
                     <tbody>
                     {
                         data.map((item) => (
-                            <tr>
+
+                            <tr onClick={() => {
+                                setEditData(item);
+                                setEditModalShow(true);
+                            }}>
                                 <td>{item.key}</td>
                                 <td>{item.name}</td>
                                 <td>{item.reduction}</td>
@@ -135,12 +153,13 @@ const AccountStatus = () => {
                                 <td>{item.startDate}</td>
                                 <td>{item.endDate}</td>
                             </tr>
+
                         ))
                     }
+                    {handleEditItem()}
                     </tbody>
                 </Table>
             </Row>
-
         </Container>
     );
 }

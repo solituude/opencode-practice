@@ -1,53 +1,22 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-const ModalNewItem = (props) => {
-    const [key, setKey] = useState("");
-    const [name, setName] = useState("");
-    const [reduction, setReduction] = useState("");
-    const [type, setType] = useState("");
-    const [nameCBRF, setNameCBRF] = useState("");
-    const [BIC, setBIC] = useState("");
-    const [isAgree, setIsAgree] = useState("false");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-
-    const cleanForm = () => {
-        setKey("");
-        setName("");
-        setReduction("");
-        setType("");
-        setNameCBRF("");
-        setBIC("");
-        setIsAgree("false");
-        setStartDate("");
-        setEndDate("");
-    }
-
-    const addNewItem = () => {
-        props.setNewDate({key, name, reduction, type, nameCBRF, BIC, isAgree, startDate, endDate});
-        cleanForm();
-        props.onHide();
-    }
+const ModalEditItem = (props) => {
+    const [key, setKey] = useState(props.data.key);
+    const [name, setName] = useState(props.data.name);
+    const [reduction, setReduction] = useState(props.data.reduction);
+    const [type, setType] = useState(props.data.type);
+    const [nameCBRF, setNameCBRF] = useState(props.data.nameCBRF);
+    const [BIC, setBIC] = useState(props.data.BIC);
+    const [isAgree, setIsAgree] = useState(props.data.isAgree);
+    const [startDate, setStartDate] = useState(props.data.startDate);
+    const [endDate, setEndDate] = useState(props.data.endDate);
 
     const closeModal = () => {
-        cleanForm();
         props.onHide();
     }
-
-    const [validated, setValidated] = useState(false);
-
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        setValidated(true);
-    };
 
     return (
         <Modal
@@ -58,18 +27,18 @@ const ModalNewItem = (props) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Новая запись
+                    Редактирование записи
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form>
                     <Form.Group className="mb-3" >
                         <Form.Label>Код</Form.Label>
-                        <Form.Control required type="text" controlId="validationCustom01" value={key} onChange={(event) =>
+                        <Form.Control type="text"
+                                      value={key}
+                                      defaultValue={props.data.key}
+                                      onChange={(event) =>
                             setKey(event.target.value)}/>
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid city.
-                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -116,11 +85,11 @@ const ModalNewItem = (props) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={addNewItem} type="submit">add</Button>
+                <Button type="submit">edit</Button>
                 <Button onClick={closeModal}>Close</Button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default ModalNewItem;
+export default ModalEditItem;

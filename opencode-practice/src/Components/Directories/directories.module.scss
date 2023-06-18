@@ -12,11 +12,9 @@
 
 .search__container {
   display: flex;
-  //width: 100%;
   align-items: center;
-
   height: 36px;
-  //max-height: fit-content;
+  padding: 0 20px;
   background: #CECEE4;
   color: #303752;
 }
@@ -68,6 +66,22 @@
   height: 28px;
   background: #CECEE4;
   color: #303752;
+  padding-left: 20px;
+
+  &__btn {
+    display: flex;
+    width: fit-content;
+    color: #7D8295;
+    background: none;
+    border: none;
+    gap: 12px;
+    align-items: center;
+
+    &:hover {
+      background: #b6b6ce;
+      border-radius: 4px;
+    }
+  }
 }
 
 .table {
@@ -78,3 +92,4 @@
     text-align: center;
   }
 }
+

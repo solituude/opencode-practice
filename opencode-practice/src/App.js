@@ -25,7 +25,7 @@ import LogIn from "./Components/LogIn/LogIn";
 import {useState} from "react";
 
 function App() {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
     return (
         <Container fluid className="content">
             <BrowserRouter>

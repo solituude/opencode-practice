@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Row } from "react-bootstrap";
+import React, {useState} from "react";
 import {
     Box,
     Button,
@@ -18,7 +17,7 @@ import downloadIcon from "../../img/downloadIcon.svg";
 import folderOpenIcon from "../../img/folderOpen.svg";
 import folderCloseIcon from "../../img/folderClose.svg";
 import s from "../Header/header.module.scss";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const Menu = () => {
     const directories = [
@@ -42,17 +41,17 @@ const Menu = () => {
             url: "/directories/availableMoneyTransferServices",
             nameDir: "Доступные сервисы перевода денежных средств",
         },
-        { url: "/directories/exchangeParticipant", nameDir: "Участник обмена" },
+        {url: "/directories/exchangeParticipant", nameDir: "Участник обмена"},
         {
             url: "/directories/restrictionsOnMoneyTransferServices",
             nameDir: "Ограничения сервисов перевода денежных средств",
         },
-        { url: "/directories/memberStatus", nameDir: "Статус участника" },
+        {url: "/directories/memberStatus", nameDir: "Статус участника"},
         {
             url: "/directories/restrictionsOnAccountTransactions",
             nameDir: "Ограничения операций по счету",
         },
-        { url: "/directories/accountStatus", nameDir: "Статус счета" },
+        {url: "/directories/accountStatus", nameDir: "Статус счета"},
         {
             url: "/directories/accountTypeWithStandards",
             nameDir: "Тип счета в соответствии с нормативом",
@@ -79,51 +78,47 @@ const Menu = () => {
     return (
         <>
             <Button edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleDrawer(true)}>
-                <img src={menuIcon} alt="menu" />
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleDrawer(true)}>
+                <img src={menuIcon} alt="menu"/>
             </Button>
 
             <Drawer anchor="left"
-                variant="temporary"
-                open={isOpenMenu}
-                onClose={toggleDrawer(false)}
-                onOpen={toggleDrawer(true)}>
+                    variant="temporary"
+                    open={isOpenMenu}
+                    onClose={toggleDrawer(false)}
+                    onOpen={toggleDrawer(true)}>
                 <Box className={s.menu}>
-                    <List sx={{ width: 360 }} component="nav" subheader={
+                    <List sx={{width: 360}} component="nav" subheader={
                         <ListSubheader component="div">
-                            Nested List Items
+                            Меню
                         </ListSubheader>}>
+                        <NavLink to="/ed807" style={{textDecoration: 'none', color: '#303752'}}>
+                            <ListItemButton onClick={() => setIsOpenMenu(false)}>
+                                <ListItemIcon>
+                                    <img src={downloadIcon} alt="import"/>
+                                </ListItemIcon>
+                                Импорт
+                            </ListItemButton>
+                        </NavLink>
 
-                        
-                            {/* <ListItemButton onClick={() => setIsOpenMenu(false)}> */}
-                            <NavLink to="/ed807" style={{ textDecoration: 'none', color: '#303752' }}>
-                                <ListItemButton onClick={() => setIsOpenMenu(false)}>
-                                    <ListItemIcon>
-                                        <img src={downloadIcon} alt="import" />
-                                    </ListItemIcon>
-                                    Import
-                                </ListItemButton>
-                            </NavLink>
-                            {/* </ListItemButton> */}
-                        
 
                         <ListItemButton onClick={handleClick}>
                             <ListItemIcon>
-                                {isOpenDir ? <img src={folderOpenIcon} alt="open folder" /> :
-                                    <img src={folderCloseIcon} alt="close folder" />}
+                                {isOpenDir ? <img src={folderOpenIcon} alt="open folder"/> :
+                                    <img src={folderCloseIcon} alt="close folder"/>}
                             </ListItemIcon>
-                            <ListItemText primary="Справочники" />
-                            {isOpenDir ? <ExpandLess /> : <ExpandMore />}
+                            <ListItemText primary="Справочники"/>
+                            {isOpenDir ? <ExpandLess/> : <ExpandMore/>}
                         </ListItemButton>
 
                         <Collapse in={isOpenDir} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 {directories.map((dir) => (
-                                    <NavLink to={dir.url} onClick={() => setIsOpenMenu(false)} 
-                                                          style={{ textDecoration: 'none', color: '#303752' }}>
-                                        <ListItemButton sx={{ pl: 6 }}>
+                                    <NavLink to={dir.url} onClick={() => setIsOpenMenu(false)}
+                                             style={{textDecoration: 'none', color: '#303752'}}>
+                                        <ListItemButton sx={{pl: 6}}>
                                             {dir.nameDir}
                                         </ListItemButton>
                                     </NavLink>
