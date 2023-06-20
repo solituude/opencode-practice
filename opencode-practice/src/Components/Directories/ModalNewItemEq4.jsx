@@ -3,31 +3,29 @@ import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
 import {useState} from "react";
 
-const ModalNewItem = (props) => {
+const ModalNewItemEq4 = (props) => {
     const [key, setKey] = useState("");
     const [name, setName] = useState("");
-    const [reduction, setReduction] = useState("");
-    const [type, setType] = useState("");
-    const [nameCBRF, setNameCBRF] = useState("");
-    const [BIC, setBIC] = useState("");
-    const [isAgree, setIsAgree] = useState("false");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [dateIn, setDateIn] = useState("");
+    const [dateOut, setDateOut] = useState("");
+    const [createDate, setCreateDate] = useState("");
+    const [createUser, setCreateUser] = useState("");
+    const [editDate, setEditDate] = useState("");
+    const [editUser, setEditUser] = useState("");
 
     const cleanForm = () => {
         setKey("");
         setName("");
-        setReduction("");
-        setType("");
-        setNameCBRF("");
-        setBIC("");
-        setIsAgree("false");
-        setStartDate("");
-        setEndDate("");
+        setDateIn("");
+        setDateOut("");
+        setCreateDate("");
+        setCreateUser("");
+        setEditDate("false");
+        setEditUser("");
     }
 
     const addNewItem = () => {
-        props.setNewDate({key, name, reduction, type, nameCBRF, BIC, isAgree, startDate, endDate});
+        props.setNewDate({key, name, dateIn, dateOut, createDate, createUser, editDate, editUser});
         cleanForm();
         props.onHide();
     }
@@ -79,39 +77,14 @@ const ModalNewItem = (props) => {
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Сокращение</Form.Label>
-                        <Form.Control type="text" value={reduction} onChange={(event) =>
-                            setReduction(event.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Вид</Form.Label>
-                        <Form.Control type="text" value={type} onChange={(event) =>
-                            setType(event.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Наименование ЦБ РФ</Form.Label>
-                        <Form.Control type="text" value={nameCBRF} onChange={(event) =>
-                            setNameCBRF(event.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>БИК</Form.Label>
-                        <Form.Control type="text" value={BIC} onChange={(event) =>
-                            setBIC(event.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Согл</Form.Label>
-                        <Form.Control type="text" value={isAgree} onChange={(event) =>
-                            setIsAgree(event.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Действителен с</Form.Label>
-                        <Form.Control type="text" value={startDate} onChange={(event) =>
-                            setStartDate(event.target.value)} />
+                        <Form.Label>Период действия с</Form.Label>
+                        <Form.Control type="text" value={dateIn} onChange={(event) =>
+                            setDateIn(event.target.value)}/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>по</Form.Label>
-                        <Form.Control type="text" value={endDate} onChange={(event) =>
-                            setEndDate(event.target.value)} />
+                        <Form.Control type="text" value={dateOut} onChange={(event) =>
+                            setDateOut(event.target.value)}/>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -123,4 +96,4 @@ const ModalNewItem = (props) => {
     );
 }
 
-export default ModalNewItem;
+export default ModalNewItemEq4;

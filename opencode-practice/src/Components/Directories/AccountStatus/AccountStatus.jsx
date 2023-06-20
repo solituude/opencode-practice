@@ -1,48 +1,13 @@
 import React, {useState} from 'react';
 import {CloseButton, Container, Row, Table} from "react-bootstrap";
 import s from '../directories.module.scss';
-import ModalNewItem from "./ModalNewItem";
-import ModalEditItem from "./ModalEditItem";
+import ModalNewItemEq4 from "../ModalNewItemEq4";
+import ModalEditItemEq4 from "../ModalEditItemEq4";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
-const AccountStatus = () => {
-    const nameCols = [
-        {name: "Код"},
-        {name: "Наименование"},
-        {name: "Сокращение"},
-        {name: "Вид"},
-        {name: "Наименование ЦБ РФ"},
-        {name: "БИК"},
-        {name: "Согл"},
-        {name: "Действителен с"},
-        {name: "по"},
-    ]
+const AccRstr = () => {
 
-    const example = [
-        {
-            key: "B016",
-            name: "БАЙКАЛЬСКИЙ БАНК ПАО СБЕРБАНК",
-            reduction: "",
-            type: "банк",
-            nameCBRF: "БАЙКАЛЬСКИЙ БАНК ПАО СБЕРБАНК",
-            BIC: "042520607",
-            isAgree: false,
-            startDate: "01-01-2000",
-            endDate: "02-01-2009",
-        },
-
-        {
-            key: "B057",
-            name: "БАНК \"ВБРР\" (AO)",
-            reduction: "",
-            type: "банк",
-            nameCBRF: "БАНК \"ВБРР' (AO)",
-            BIC: "044525880",
-            isAgree: false,
-            startDate: "01-01-2000",
-            endDate: "02-01-2014",
-        },
-    ]
+    const example = [];
 
     const [key, setKey] = useState("");
     const [name, setName] = useState("");
@@ -71,15 +36,18 @@ const AccountStatus = () => {
 
     const handleEditItem = () => {
         if (editModalShow) {
-            return (<ModalEditItem show={true}
-                                   onHide={() => setEditModalShow(false)}
-                                   data={editData}/>);
+            return (<ModalEditItemEq4 show={true}
+                                      onHide={() => setEditModalShow(false)}
+                                      data={editData}/>);
         } else return null;
 
     }
 
     return (
         <Container fluid className={s.main__container}>
+            <Row className={s.search__container}>
+                Справочник. Статус счета
+            </Row>
             <Row className={s.search__container}>
                 <label className={s.search__item}>
                     <p className={"col-2 m-auto"}>Код:</p>
@@ -123,35 +91,44 @@ const AccountStatus = () => {
                     <AddRoundedIcon/>
                     Новая запись
                 </button>
-                <ModalNewItem
+                <ModalNewItemEq4
                     setNewDate={handleAddNewItem}
                     show={modalShow}
                     onHide={() => setModalShow(false)}/>
             </Row>
             <Row>
-                <Table className={s.table} hover>
-                    <thead>
-                    {nameCols.map((item) => (
-                        <th className={s.table__col}>{item.name}</th>
-                    ))}
-                    </thead>
+                <Table className="align-middle" hover>
+                    <tr>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1" rowSpan={2}>Код</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-5" rowSpan={2}>Наименование</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-2" colSpan={2}>Период действия</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-2" colSpan={2}>Создано</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-2" colSpan={2}>Изменено</th>
+                    </tr>
+                    <tr>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">c</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">по</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">Дата</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">Пользователь</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">Дата</th>
+                        <th style={{border: "1px solid #999CA5"}} className="col-1">Пользователь</th>
+                    </tr>
+
                     <tbody>
                     {
                         data.map((item) => (
-
                             <tr onClick={() => {
                                 setEditData(item);
                                 setEditModalShow(true);
                             }}>
                                 <td>{item.key}</td>
                                 <td>{item.name}</td>
-                                <td>{item.reduction}</td>
-                                <td>{item.type}</td>
-                                <td>{item.nameCBRF}</td>
-                                <td>{item.BIC}</td>
-                                <td>{item.isAgree}</td>
-                                <td>{item.startDate}</td>
-                                <td>{item.endDate}</td>
+                                <td>{item.dateIn}</td>
+                                <td>{item.dateOut}</td>
+                                <td>{item.createDate}</td>
+                                <td>{item.createUser}</td>
+                                <td>{item.editDate}</td>
+                                <td>{item.editUser}</td>
                             </tr>
                         ))
                     }
@@ -163,4 +140,4 @@ const AccountStatus = () => {
     );
 }
 
-export default AccountStatus;
+export default AccRstr;

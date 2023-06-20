@@ -4,6 +4,7 @@ import {Avatar} from "@mui/material";
 import {Col, Row, Dropdown} from "react-bootstrap";
 import exitIcon from '../../img/exitIcon.svg';
 import Menu from "../Menu/Menu";
+import {useLocation} from "react-router-dom";
 
 const userData = {
     surname: "Иванов",
@@ -11,11 +12,26 @@ const userData = {
     patronymic: "Иванович"
 }
 
+const renderPathname = (location) => {
+    switch (location){
+        case '/directories/creationReason':
+            return <p>Справочник. Причина создания ЭС</p>
+        case '/directories/infoTypeCode':
+            return <p>Справочник. Вид представления информации</p>
+        default:
+            return <p>hi</p>
+    }
+}
+
 const Header = () => {
+    const location = useLocation().pathname;
+    console.log(location);
+
     return (
         <Row className={s.container}>
             <Col className={s.main__container} xs={10}>
                 <Menu/>
+                {renderPathname(location)}
             </Col>
             <Col className={s.exit__btn__area}>
                 <Dropdown>

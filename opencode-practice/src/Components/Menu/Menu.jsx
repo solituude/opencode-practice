@@ -17,43 +17,43 @@ import downloadIcon from "../../img/downloadIcon.svg";
 import folderOpenIcon from "../../img/folderOpen.svg";
 import folderCloseIcon from "../../img/folderClose.svg";
 import s from "../Header/header.module.scss";
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
 const Menu = () => {
     const directories = [
         {
-            url: "/directories/reasonOfCreation",
+            url: "/directories/creationReason",
             nameDir: "Причина создания ЭС",
         },
         {
-            url: "/directories/typeOfInformationPresentation",
+            url: "/directories/infoTypeCode",
             nameDir: "Вид представления информации",
         },
         {
-            url: "/directories/changeTypeInDirectory",
+            url: "/directories/changeType",
             nameDir: "Тип изменения в справочнике",
         },
         {
-            url: "/directories/typeOfTransferParticipant",
+            url: "/directories/ptType",
             nameDir: "Тип участника перевода",
         },
         {
-            url: "/directories/availableMoneyTransferServices",
+            url: "/directories/srvcs",
             nameDir: "Доступные сервисы перевода денежных средств",
         },
-        {url: "/directories/exchangeParticipant", nameDir: "Участник обмена"},
+        {url: "/directories/xchType", nameDir: "Участник обмена"},
         {
-            url: "/directories/restrictionsOnMoneyTransferServices",
+            url: "/directories/rstr",
             nameDir: "Ограничения сервисов перевода денежных средств",
         },
-        {url: "/directories/memberStatus", nameDir: "Статус участника"},
+        {url: "/directories/participantStatus", nameDir: "Статус участника"},
         {
-            url: "/directories/restrictionsOnAccountTransactions",
+            url: "/directories/accRstr",
             nameDir: "Ограничения операций по счету",
         },
         {url: "/directories/accountStatus", nameDir: "Статус счета"},
         {
-            url: "/directories/accountTypeWithStandards",
+            url: "/directories/regulationAccountType",
             nameDir: "Тип счета в соответствии с нормативом",
         },
     ];
@@ -74,6 +74,7 @@ const Menu = () => {
     const handleClick = () => {
         setIsOpenDir(!isOpenDir);
     };
+
 
     return (
         <>
