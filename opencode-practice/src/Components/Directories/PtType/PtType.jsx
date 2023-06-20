@@ -1,12 +1,12 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
 
-const ReasonOfCreation = () => {
+const PtType = () => {
     return(
         <Row>
-            Причина создания ЭС
+            Тип участника перевода
         </Row>
     );
 }
 
-export default ReasonOfCreation;
+export default PtType;

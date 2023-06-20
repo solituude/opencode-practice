@@ -1,12 +1,12 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
 
-const ExchangeParticipant = () => {
+const ParticipantStatus = () => {
     return(
         <Row>
-           Участник обмена ?
+            Статус участника
         </Row>
     );
 }
 
-export default ExchangeParticipant;
+export default ParticipantStatus;

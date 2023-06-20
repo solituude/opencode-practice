@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {CloseButton, Container, Row, Table} from "react-bootstrap";
 import s from '../directories.module.scss';
-import {Button} from "@mui/material";
 import ModalNewItem from "./ModalNewItem";
 import ModalEditItem from "./ModalEditItem";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -122,7 +121,8 @@ const AccountStatus = () => {
                 <button className={s.edit__area__btn}
                         onClick={() => setModalShow(true)}>
                     <AddRoundedIcon/>
-                    Новая запись</button>
+                    Новая запись
+                </button>
                 <ModalNewItem
                     setNewDate={handleAddNewItem}
                     show={modalShow}
@@ -153,7 +153,6 @@ const AccountStatus = () => {
                                 <td>{item.startDate}</td>
                                 <td>{item.endDate}</td>
                             </tr>
-
                         ))
                     }
                     {handleEditItem()}

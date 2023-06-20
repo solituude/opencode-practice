@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
 
-const ChangeTypeInDirectory = () => {
+const ChangeType = () => {
     return(
         <Row>
             Тип изменения в справочнике
@@ -9,4 +9,4 @@ const ChangeTypeInDirectory = () => {
     );
 }
 
-export default ChangeTypeInDirectory;
+export default ChangeType;

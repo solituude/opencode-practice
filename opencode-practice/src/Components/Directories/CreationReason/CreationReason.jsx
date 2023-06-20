@@ -1,12 +1,12 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
 
-const MemberStatus = () => {
+const CreationReason = () => {
     return(
         <Row>
-            Статус участника
+            Причина создания ЭС
         </Row>
     );
 }
 
-export default MemberStatus;
+export default CreationReason;

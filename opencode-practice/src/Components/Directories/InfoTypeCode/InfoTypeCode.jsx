@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
 
-const TypeOfInformationPresentation = () => {
+const InfoTypeCode = () => {
     return(
         <Row>
             Вид представления информации
@@ -9,4 +9,4 @@ const TypeOfInformationPresentation = () => {
     );
 }
 
-export default TypeOfInformationPresentation;
+export default InfoTypeCode;
