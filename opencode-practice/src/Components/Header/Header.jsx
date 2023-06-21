@@ -18,8 +18,28 @@ const renderPathname = (location) => {
             return <p>Справочник. Причина создания ЭС</p>
         case '/directories/infoTypeCode':
             return <p>Справочник. Вид представления информации</p>
+        case "/directories/changeType":
+            return <p>Справочник. Тип изменения в справочнике</p>
+        case "/directories/ptType":
+            return <p>Справочник. Тип участника перевода</p>
+        case "/directories/srvcs":
+            return <p>Справочник. Доступные сервисы перевода денежных средств</p>
+        case "/directories/xchType":
+            return <p>Справочник. Участник обмена</p>
+        case "/directories/rstr":
+            return <p>Справочник. Ограничения сервисов перевода денежных средств</p>
+        case "/directories/participantStatus":
+            return <p>Справочник. Статус участника</p>
+        case "/directories/accRstr":
+            return <p>Справочник. Ограничения операций по счету</p>
+        case "/directories/accountStatus":
+            return <p>Справочник. Статус счета</p>
+        case "/directories/regulationAccountType":
+            return <p>Справочник. Тип счета в соответствии с нормативом</p>
+        case '/ed807':
+            return <p>Импорт</p>
         default:
-            return <p>hi</p>
+            return <p>Импорт. БИК</p>
     }
 }
 
