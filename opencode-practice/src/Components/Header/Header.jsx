@@ -15,31 +15,31 @@ const userData = {
 const renderPathname = (location) => {
     switch (location){
         case '/directories/creationReason':
-            return <p>Справочник. Причина создания ЭС</p>
+            return <p className={s.pathname}>Справочник. Причина создания ЭС</p>
         case '/directories/infoTypeCode':
-            return <p>Справочник. Вид представления информации</p>
+            return <p className={s.pathname}>Справочник. Вид представления информации</p>
         case "/directories/changeType":
-            return <p>Справочник. Тип изменения в справочнике</p>
+            return <p className={s.pathname}>Справочник. Тип изменения в справочнике</p>
         case "/directories/ptType":
-            return <p>Справочник. Тип участника перевода</p>
+            return <p className={s.pathname}>Справочник. Тип участника перевода</p>
         case "/directories/srvcs":
-            return <p>Справочник. Доступные сервисы перевода денежных средств</p>
+            return <p className={s.pathname}>Справочник. Доступные сервисы перевода денежных средств</p>
         case "/directories/xchType":
-            return <p>Справочник. Участник обмена</p>
+            return <p className={s.pathname}>Справочник. Участник обмена</p>
         case "/directories/rstr":
-            return <p>Справочник. Ограничения сервисов перевода денежных средств</p>
+            return <p className={s.pathname}>Справочник. Ограничения сервисов перевода денежных средств</p>
         case "/directories/participantStatus":
-            return <p>Справочник. Статус участника</p>
+            return <p className={s.pathname}>Справочник. Статус участника</p>
         case "/directories/accRstr":
-            return <p>Справочник. Ограничения операций по счету</p>
+            return <p className={s.pathname}>Справочник. Ограничения операций по счету</p>
         case "/directories/accountStatus":
-            return <p>Справочник. Статус счета</p>
+            return <p className={s.pathname}>Справочник. Статус счета</p>
         case "/directories/regulationAccountType":
-            return <p>Справочник. Тип счета в соответствии с нормативом</p>
+            return <p className={s.pathname}>Справочник. Тип счета в соответствии с нормативом</p>
         case '/ed807':
-            return <p>Импорт</p>
+            return <p v>Импорт</p>
         default:
-            return <p>Импорт. БИК</p>
+            return <p className={s.pathname}>Импорт. БИК</p>
     }
 }
 

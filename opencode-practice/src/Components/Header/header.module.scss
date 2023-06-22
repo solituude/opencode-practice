@@ -32,11 +32,6 @@
   border: none;
   height: 36px;
   width: 36px;
-  //&:hover{
-  //  border-radius: 4px;
-  //  cursor: pointer;
-  //  background: #acacc9;
-  //}
 
   &__area{
     display: flex;
@@ -77,3 +72,8 @@
   flex-direction: column;
 }
 
+.pathname {
+  color: #F9FAFF;
+  font-size: 14px;
+  margin: auto 10px;
+}

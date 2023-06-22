@@ -2,6 +2,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
 import {useState} from "react";
+import {isCodeEq4Valid} from "./validation";
+import {isDataSet} from "./validation";
+import s from './directories.module.scss';
 
 const ModalNewItemEq4 = (props) => {
     const [key, setKey] = useState("");
@@ -13,6 +16,11 @@ const ModalNewItemEq4 = (props) => {
     const [editDate, setEditDate] = useState("");
     const [editUser, setEditUser] = useState("");
 
+
+    const [errorKey, setErrorKey] = useState(false);
+    const [errorName, setErrorName] = useState(false);
+    const [errorDate, setErrorDate] = useState(false);
+
     const cleanForm = () => {
         setKey("");
         setName("");
@@ -20,8 +28,25 @@ const ModalNewItemEq4 = (props) => {
         setDateOut("");
         setCreateDate("");
         setCreateUser("");
-        setEditDate("false");
+        setEditDate("");
         setEditUser("");
+    }
+
+    const handleSubmit = () => {
+        setErrorKey(false);
+        setErrorName(false);
+        if (!isCodeEq4Valid(key)) {
+            setErrorKey(true);
+        }
+        if (!isDataSet(name)) {
+            setErrorName(true);
+        }
+        else if (isCodeEq4Valid(key) && isDataSet(name)) {
+            setErrorName(false);
+            console.log('here');
+            setErrorKey(false);
+            addNewItem();
+        }
     }
 
     const addNewItem = () => {
@@ -32,64 +57,53 @@ const ModalNewItemEq4 = (props) => {
 
     const closeModal = () => {
         cleanForm();
+        setErrorName(false);
+        setErrorKey(false);
         props.onHide();
     }
 
-    const [validated, setValidated] = useState(false);
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        setValidated(true);
-    };
 
     return (
         <Modal
             {...props}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
+            centered>
+
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Новая запись
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label>Код</Form.Label>
-                        <Form.Control required type="text" controlId="validationCustom01" value={key} onChange={(event) =>
-                            setKey(event.target.value)}/>
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid city.
-                        </Form.Control.Feedback>
+                        <Form.Control type="text" value={key} onChange={(event) => {
+                            setKey(event.target.value);
+                            setErrorKey(false);
+                        }}/>
+                        <Form.Label>
+                            {errorKey ? <p className={s.error}>Введите 4 символа</p> : null}
+                        </Form.Label>
+
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Наименование</Form.Label>
-                        <Form.Control type="text" value={name} onChange={(event) =>
-                            setName(event.target.value)}/>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Период действия с</Form.Label>
-                        <Form.Control type="text" value={dateIn} onChange={(event) =>
-                            setDateIn(event.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>по</Form.Label>
-                        <Form.Control type="text" value={dateOut} onChange={(event) =>
-                            setDateOut(event.target.value)}/>
+                        <Form.Control type="text" value={name} onChange={(event) => {
+                            setName(event.target.value);
+                            setErrorName(false);
+                        }}/>
+                        <Form.Label>
+                            {errorName ? <p className={s.error}>Необходимо заполнить данное поле</p> : null}
+                        </Form.Label>
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={addNewItem} type="submit">add</Button>
+                <Button onClick={handleSubmit} type="submit">add</Button>
                 <Button onClick={closeModal}>Close</Button>
             </Modal.Footer>
         </Modal>
