@@ -1,23 +1,25 @@
 import React, {useState} from "react";
-// import axios from 'axios';
+import axios from 'axios';
 import FormEmail from "./contentLogin/FormEmail";
 import FromPassword from "./contentLogin/FormPassword";
 import s from './login.module.css'
 const LogIn = () => {
+    // const apiUrl = 'http://localhost:9090';
+
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [showError, setShowError] = useState(false);
 
     const handleSubmit = async (e) => {
         setShowError(true);
-        // e.preventDefault();
-        // try {
-        //     const response = await axios.post('/customauth/customauth/login/', {email, password});
-        //     localStorage.setItem('token', response.data.token);
-        //     window.location.href = '/';
-        // } catch (error) {
-        //     setShowError(true);
-        // }
+        e.preventDefault();
+        try {
+            const response = await axios.post(`/login`, {email, password});
+            localStorage.setItem('token', response.data.token);
+            window.location.href = '/';
+        } catch (error) {
+            setShowError(true);
+        }
     }
 
     return (

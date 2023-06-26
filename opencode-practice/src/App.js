@@ -20,11 +20,25 @@ import LogIn from "./Components/LogIn/LogIn";
 import {useState} from "react";
 
 function App() {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    // console.log(localStorage.getItem('token'))
+
+    function handleLogin(token) {
+        localStorage.setItem('token', token);
+        setIsLoggedIn(true);
+    }
+
+    function handleLogout() {
+        // localStorage.removeItem('token');
+        setIsLoggedIn(false);
+    }
+
+
     return (
         <Container fluid className="content">
+            {console.log(isLoggedIn)}
             <BrowserRouter>
-                {isLogged ? (
+                {isLoggedIn? (
                     <>
                         <Header/>
                         <Routes>

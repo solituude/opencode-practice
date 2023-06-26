@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { CloseButton, Col, Row, Table, Container } from "react-bootstrap";
+import React, {useState, useRef, useEffect} from "react";
+import {CloseButton, Col, Row, Table, Container} from "react-bootstrap";
 import s from './filesbase.module.scss';
 import searchIcon from '../../img/searchIcon.svg';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
@@ -13,6 +13,8 @@ const FilesBase = () => {
     const [dateStart, setDateStart] = useState("");
     const [dateEnd, setDateEnd] = useState("");
     const [data, setData] = useState([]);
+
+    const apiUrl = 'http://localhost:9090';
 
     const handleSetDateStart = (event) => {
         setDateStart(event.target.value.toString());
@@ -31,63 +33,78 @@ const FilesBase = () => {
     }
 
     const nameColumns = [
-        {
-            name:"№",
-        },
-        {
-            name:"Наименование",
-        },
-        {
-            name:"Дата создания",
-        },
-        {
-            name:"Файл",
-        },
-        {
-            name:"Дата составления ЭС",
-        },
-        {
-            name:"ID составления ЭС",
-        },
-        {
-            name: "ID получателя ЭС",
-        },
-        {
-            name: "Код причины создания",
-        },
-        {
-            name: "Дата создания ЭС",
-        },
-        {
-            name: "Вид представления...",
-        },
-        {
-            name: "Дата ОД",
-        },
-        {
-            name: "Номер версии справ..",
-        },
-        {
-            name: "Признак сопоставления",
-        },
-        {
-            name: "Пользователь",
-        },
+        {name: "№",},
+        {name: "Наименование",},
+        {name: "Дата создания",},
+        {name: "Файл",},
+        {name: "Дата составления ЭС",},
+        {name: "ID составления ЭС",},
+        {name: "ID получателя ЭС",},
+        {name: "Код причины создания",},
+        {name: "Дата создания ЭС",},
+        {name: "Вид представления...",},
+        {name: "Дата ОД",},
+        {name: "Номер версии справ..",},
+        {name: "Признак сопоставления",},
+        {name: "Пользователь",},
 
     ];
 
     const fileInputRef = useRef(null);
     const [selectedFileName, setSelectedFileName] = useState('');
 
-    const handleFileChange = (event) => {
+    const handleFileSelect = async (event) => {
         const file = event.target.files[0];
         setSelectedFileName(file.name);
         console.log(file);
-    };
+
+        const username = 'user1';
+        const password = 'password1';
+        const headers = new Headers();
+        headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileName', selectedFileName);
+        fetch(`/api/ed807`, {
+            method: 'POST',
+            headers: headers,
+            body: formData,
+        })
+            .then((response) => {
+                console.log('Ответ сервера:', response);
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+            })
+    }
+
 
     const handleBrowseClick = () => {
         fileInputRef.current.click();
     };
+
+
+    useEffect(() => {
+        getData();
+    })
+
+    let getData = async () => {
+        const username = 'user1';
+        const password = 'password1';
+        const headers = new Headers();
+        headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+        try {
+            let response = await fetch(`/api/ed807`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.json();
+            console.log('DATA:', data);
+        } catch (e) {
+            console.log(e.message);
+        }
+
+    }
 
 
     return (
@@ -98,10 +115,10 @@ const FilesBase = () => {
                         Наименование:
                         <div className={s.name__search__textarea}>
                             <input type="text"
-                                value={name}
-                                onChange={handleSetName}
-                                className={s.textarea} />
-                            <CloseButton onClick={() => setName("")} />
+                                   value={name}
+                                   onChange={handleSetName}
+                                   className={s.textarea}/>
+                            <CloseButton onClick={() => setName("")}/>
                         </div>
                     </label>
                 </Col>
@@ -111,9 +128,9 @@ const FilesBase = () => {
                         Дата загрузки с:
                         <div className={s.date__search__textarea}>
                             <input type="date"
-                                defaultValue=""
-                                onChange={handleSetDateStart}
-                                className={s.textarea} />
+                                   defaultValue=""
+                                   onChange={handleSetDateStart}
+                                   className={s.textarea}/>
                         </div>
                     </label>
 
@@ -121,13 +138,13 @@ const FilesBase = () => {
                         по
                         <div className={s.date__search__textarea}>
                             <input type="date"
-                                onChange={handleSetDateEnd}
-                                className={s.textarea} />
+                                   onChange={handleSetDateEnd}
+                                   className={s.textarea}/>
                         </div>
                     </label>
 
                     <button className={s.search__btn}>
-                        <img src={searchIcon} alt="поиск" />
+                        <img src={searchIcon} alt="поиск"/>
                     </button>
 
                     <button className={s.search__btn} onClick={cleanFields}>
@@ -137,14 +154,13 @@ const FilesBase = () => {
             </Row>
 
             <Row className={s.action__field}>
-                <button className={s.action__field__btn}  onClick={handleBrowseClick}>
+                <button className={s.action__field__btn} onClick={handleBrowseClick}>
                     <input
                         type="file"
                         ref={fileInputRef}
-                        onChange={handleFileChange}
-                        style={{ display: 'none' }}
-                    />
-                    <KeyboardDoubleArrowUpRoundedIcon />
+                        onChange={handleFileSelect}
+                        style={{display: 'none'}}/>
+                    <KeyboardDoubleArrowUpRoundedIcon/>
                     Импортировать
                 </button>
 
@@ -156,31 +172,31 @@ const FilesBase = () => {
 
             <Row className={s.file__content} xs={12}>
                 <Table className={s.file__table} hover>
-                    <thead>
+                    <tr>
                         {nameColumns.map((item) => (
-                            <th className={s.file__table__col}>{item.name}</th>
+                            <td className={s.file__table__col}>{item.name}</td>
                         ))}
-                        <th className={s.file__table__col}></th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>file345678.xlmns</td>
-                            <td>23-05-2023</td>
-                            <td><NavLink to={`/bics/${623428932}`}>file345678.xlmns</NavLink></td>
-                            <td>04-05-2023</td>
-                            <td>6234928932</td>
-                            <td></td>
-                            <td>FCBD</td>
-                            <td>04-05-2023</td>
-                            <td>FIRR</td>
-                            <td>23-05-2023</td>
-                            <td>1</td>
-                            <td></td>
-                            <td>денис</td>
-                            <td><DeleteOutlineRoundedIcon/></td>
-                        </tr>
-                    </tbody>
+                        <td className={s.file__table__col}></td>
+                    </tr>
+
+                    <tr>
+                        <td>1</td>
+                        <td>file345678.xlmns</td>
+                        <td>23-05-2023</td>
+                        <td><NavLink to={`/bics/${623428932}`}>file345678.xlmns</NavLink></td>
+                        <td>04-05-2023</td>
+                        <td>6234928932</td>
+                        <td></td>
+                        <td>FCBD</td>
+                        <td>04-05-2023</td>
+                        <td>FIRR</td>
+                        <td>23-05-2023</td>
+                        <td>1</td>
+                        <td></td>
+                        <td>денис</td>
+                        <td><DeleteOutlineRoundedIcon/></td>
+                    </tr>
+
                 </Table>
             </Row>
         </Container>

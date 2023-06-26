@@ -37,7 +37,7 @@ const renderPathname = (location) => {
         case "/directories/regulationAccountType":
             return <p className={s.pathname}>Справочник. Тип счета в соответствии с нормативом</p>
         case '/ed807':
-            return <p v>Импорт</p>
+            return <p className={s.pathname}>Импорт</p>
         default:
             return <p className={s.pathname}>Импорт. БИК</p>
     }
@@ -45,7 +45,6 @@ const renderPathname = (location) => {
 
 const Header = () => {
     const location = useLocation().pathname;
-    console.log(location);
 
     return (
         <Row className={s.container}>

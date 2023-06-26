@@ -160,7 +160,28 @@ const nameColumns = [
 ];
 
 export default function CollapsibleTable() {
-    // по айдишнику урла получать информацию которая будет в таблице ???
+
+        useEffect(() => {
+            getData();
+        })
+
+    let getData = async () => {
+        const username = 'user1';
+        const password = 'password1';
+        const headers = new Headers();
+        headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+        try {
+            let response = await fetch(`/api/bics?msgId=1`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.json();
+            console.log('DATA:', data);
+        } catch (e) {
+            console.log(e.message);
+        }
+
+    }
 
     const {id} = useParams();
 
