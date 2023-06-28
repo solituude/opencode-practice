@@ -14,14 +14,16 @@ const FilesBase = () => {
     const [dateEnd, setDateEnd] = useState("");
     const [data, setData] = useState([]);
 
-    const apiUrl = 'http://localhost:9090';
+    // const apiUrl = 'http://localhost:9090';
 
     const handleSetDateStart = (event) => {
         setDateStart(event.target.value.toString());
+        console.log(dateStart);
     }
 
     const handleSetDateEnd = (event) => {
         setDateEnd(event.target.value.toString());
+        console.log(dateEnd);
     }
 
     const handleSetName = (event) => {
@@ -86,7 +88,7 @@ const FilesBase = () => {
 
     useEffect(() => {
         getData();
-    })
+    }, [])
 
     let getData = async () => {
         const username = 'user1';
@@ -100,8 +102,11 @@ const FilesBase = () => {
             });
             let data = await response.json();
             console.log('DATA:', data);
+            setData(data);
         } catch (e) {
             console.log(e.message);
+        }finally {
+            console.log("fksdl")
         }
 
     }
@@ -179,24 +184,27 @@ const FilesBase = () => {
                         <td className={s.file__table__col}></td>
                     </tr>
 
-                    <tr>
-                        <td>1</td>
-                        <td>file345678.xlmns</td>
-                        <td>23-05-2023</td>
-                        <td><NavLink to={`/bics/${623428932}`}>file345678.xlmns</NavLink></td>
-                        <td>04-05-2023</td>
-                        <td>6234928932</td>
-                        <td></td>
-                        <td>FCBD</td>
-                        <td>04-05-2023</td>
-                        <td>FIRR</td>
-                        <td>23-05-2023</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>денис</td>
-                        <td><DeleteOutlineRoundedIcon/></td>
-                    </tr>
-
+                    {
+                        data.map((item, index) => (
+                            <tr>
+                                <td>{item.id}</td>
+                                <td>{item.fileName}</td>
+                                <td>{item.createdAt}</td>
+                                <td><NavLink to={`/bics/${item.id}`}>{item.title}</NavLink></td>
+                                <td>{item.eddate}</td>
+                                <td>{item.edauthor}</td>
+                                <td>{item.edreceiver}</td>
+                                <td>{item.creationReason}</td>
+                                <td>{item.CreationDateTime}</td>
+                                <td>{item.infoTypeCode}</td>
+                                <td>{item.businessDay}</td>
+                                <td>{item.directoryVersion}</td>
+                                <td>{item.PartAggregateID}</td>
+                                <td>{item.createdBy}</td>
+                                <td><DeleteOutlineRoundedIcon/></td>
+                            </tr>
+                        ))
+                    }
                 </Table>
             </Row>
         </Container>

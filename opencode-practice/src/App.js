@@ -15,9 +15,9 @@ import AccRstr from "./Components/Directories/AccRstr/AccRstr";
 import Rstr from "./Components/Directories/Rstr/Rstr";
 import InfoTypeCode from "./Components/Directories/InfoTypeCode/InfoTypeCode";
 import PtType from "./Components/Directories/PtType/PtType";
-import DataBase from "./Components/DataBase/DataBase";
 import LogIn from "./Components/LogIn/LogIn";
 import {useState} from "react";
+import BIC from "./Components/BIC/BIC";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -44,7 +44,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<FilesBase/>}/>
                             <Route path='/ed807' element={<FilesBase/>}/>
-                            <Route path='/bics/:id' element={<DataBase/>}/>
+                            <Route path='/bics/:id' element={<BIC/>}/>
                             <Route path='/directories/accountStatus' element={<AccountStatus/>}/>
                             <Route path='/directories/regulationAccountType' element={<RegulationAccountType/>}/>
                             <Route path='/directories/srvcs' element={<Srvcs/>}/>

@@ -119,7 +119,7 @@ th {
   font-style: normal;
   font-weight: 700;
   font-size: 11px;
-  border: 1px;
+  //border: 1px;
 }
 
 tr {
@@ -133,9 +133,9 @@ td {
   font-style: normal;
   font-weight: 500;
   font-size: 11px;
-  border: 1px solid #999CA5;
+  //border: 1px solid #999CA5;
   text-align: center;
-  //padding: 2px !important;
+  padding: 4px 2px !important;
 }
 
 .table__acc {
@@ -177,5 +177,19 @@ td {
       background: #b6b6ce;
       border-radius: 4px;
     }
+  }
+}
+
+.loader {
+  display: flex;
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(24, 26, 58, 0.35);
+
+  &__item {
+    display: flex;
+    margin: 40vh auto;
   }
 }
