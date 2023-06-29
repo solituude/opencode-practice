@@ -3,7 +3,7 @@ import Header from "./Components/Header/Header";
 import {Container} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import FilesBase from './Components/FilesBase/FilesBase';
+import Import from './Components/Import/Import';
 import AccountStatus from "./Components/Directories/AccountStatus/AccountStatus";
 import RegulationAccountType from "./Components/Directories/RegulationAccountType/RegulationAccountType";
 import Srvcs from "./Components/Directories/Srvcs/Srvcs";
@@ -42,8 +42,8 @@ function App() {
                     <>
                         <Header/>
                         <Routes>
-                            <Route path="/" element={<FilesBase/>}/>
-                            <Route path='/ed807' element={<FilesBase/>}/>
+                            <Route path="/" element={<Import/>}/>
+                            <Route path='/ed807' element={<Import/>}/>
                             <Route path='/bics/:id' element={<BIC/>}/>
                             <Route path='/directories/accountStatus' element={<AccountStatus/>}/>
                             <Route path='/directories/regulationAccountType' element={<RegulationAccountType/>}/>

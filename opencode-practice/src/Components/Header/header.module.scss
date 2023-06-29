@@ -1,9 +1,14 @@
 .container {
   display: flex;
+
+
+  position: fixed;
+
+
   align-items: center;
   height: 52px;
   flex-direction: row;
-  //width: 100%;
+  width: 100vw;
   background-color: #686794;
   margin-top: 0 !important;
   padding: 0 28px;

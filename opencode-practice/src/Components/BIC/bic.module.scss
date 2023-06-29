@@ -7,7 +7,7 @@
 .container {
   display: flex;
   //width: 100vw;
-  height: calc(100vh - 52px);
+  //height: calc(100vh - 52px);
   background: #F9FAFF;
   flex-direction: column;
   margin: 0 !important;
@@ -17,8 +17,11 @@
 
 .searches__container {
   display: flex;
-  //width: 100%;
+  width: 100vw;
   align-items: center;
+
+  position: fixed;
+  margin-top: 82px;
 
   height: 36px;
   //max-height: fit-content;
@@ -98,18 +101,34 @@
 .file__content {
   display: flex;
   align-items: flex-start;
-  padding: 0 !important;
+  //padding: 0 !important;
+  margin-top: 118px;
+  //margin-bottom: 0;
+  overflow-x: auto;
+  //height: calc(100vh - 118px) !important;
 }
+
+
 
 .file__table {
   //display: flex;
   font-size: 11px;
-  padding: 0 !important;
+
+  //padding-bottom: 0!important;
+  //padding: 0 !important;
+  //padding-left: 0 !important;
+  //padding-right: 0 !important;
+  //margin-left: 0 !important;
   //border: 1px solid #999CA5;
+  //overflow-y: scroll;
 
   &__col {
     border: 1px solid #999CA5;
     text-align: center;
+  }
+
+  &__head {
+    position: fixed;
   }
 
 }
@@ -120,11 +139,15 @@ th {
   font-weight: 700;
   font-size: 11px;
   //border: 1px;
+  border: 1px solid #999CA5;
+  background-color: #ECECF8 !important;
+
 }
 
 tr {
   vertical-align: center;
   padding: 1px !important;
+  border: 1px solid #999CA5;
 }
 
 
@@ -133,7 +156,7 @@ td {
   font-style: normal;
   font-weight: 500;
   font-size: 11px;
-  //border: 1px solid #999CA5;
+  border: 1px solid #999CA5;
   text-align: center;
   padding: 4px 2px !important;
 }
@@ -153,13 +176,13 @@ td {
   }
 }
 
-.tr {
-  padding: 2px !important;
-}
 
 .return__back {
   height: 30px;
   font-size: 14px;
+  margin-top: 52px;
+  position: fixed;
+  width: 100vw;
   background: #CECEE4;
   display: flex;
   padding: 4px 36px;
@@ -186,10 +209,56 @@ td {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(24, 26, 58, 0.35);
+  background: rgba(42, 45, 87, 0.2);
 
   &__item {
     display: flex;
     margin: 40vh auto;
   }
+}
+
+.pagination {
+  position: sticky;
+  display: flex;
+  bottom: 0;
+  background-color: #ECECF8;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 40px;
+  box-sizing: border-box;
+  min-width: 100vw;
+  flex-direction: row;
+  //width: 100%;
+  //max-width: 1373px;
+  &__btn {
+    display: flex;
+    width: fit-content;
+    color: #303752;
+    background: none;
+    border: none;
+    gap: 12px;
+    align-items: center;
+
+    &:hover {
+      background: #b6b6ce;
+      border-radius: 4px;
+    }
+
+
+  }
+
+  &__text{
+    display: flex;
+    width: fit-content;
+  }
+
+  &__input {
+    display: flex;
+    width: 40px;
+    background-color: #CECEE4;
+    text-align: center;
+    border: 0;
+    border-radius: 4px;
+  }
+
 }

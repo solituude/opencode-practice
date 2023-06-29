@@ -9,6 +9,10 @@ import s from './bic.module.scss';
 import Box from "@mui/material/Box";
 import {Fade} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import Loader from "../UI/loader";
+import {bool} from "prop-types";
+
 
 const BIC = () => {
     const nameColumns = [
@@ -39,25 +43,25 @@ const BIC = () => {
     const [dataBIC, setDataBIC] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [page, setPage] = useState(1);
+
+    // const [lastElement, setLastElement] = useState(0);
+
     const navigate = useNavigate();
     const {id} = useParams();
 
-    const username = 'user1';
-    const password = 'password1';
+    const username = 'user';
+    const password = 'password';
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     const goBack = () => {
         navigate(-1);
     };
 
-    let getData = async () => {
+    let getData = async (lastElement) => {
         try {
-            let response = await fetch(`/api/bics?msgId=${id}`, {
+            let response = await fetch(`/api/bics/payers?msgId=${id}&bicId=${lastElement}`, {
                 method: 'GET',
                 headers: headers
             });
@@ -70,32 +74,20 @@ const BIC = () => {
         }
     }
 
+    useEffect(() => {
+        getData((page - 1) * 25);
+    }, []);
+
 
     const columnsAccount = [
-        {
-            title: "№",
-        },
-        {
-            title: "Номер счета",
-        },
-        {
-            title: "Тип счета",
-        },
-        {
-            title: "БИК ПБР",
-        },
-        {
-            title: "Контрольный ключ",
-        },
-        {
-            title: "Дата открытия счета",
-        },
-        {
-            title: "Дата исключения информации о счете",
-        },
-        {
-            title: "Статус счета",
-        },
+        {title: "№",},
+        {title: "Номер счета",},
+        {title: "Тип счета",},
+        {title: "БИК ПБР",},
+        {title: "Контрольный ключ",},
+        {title: "Дата открытия счета",},
+        {title: "Дата исключения информации о счете",},
+        {title: "Статус счета",},
     ];
 
     const [[key, isTableOpen], setIsTableOpen] = useState([undefined, false]);
@@ -106,7 +98,7 @@ const BIC = () => {
         getAccounts(payerId)
             .then(accounts => {
                 setAccounts(accounts);
-                setIsTableOpen([payerId, true]);
+                setIsTableOpen([payerId, !isTableOpen]);
                 setIsLoading(false);
             })
             .catch(e => console.log(e.message));
@@ -127,14 +119,38 @@ const BIC = () => {
         }
     }
 
+    const handleSearch = async () => {
+        try{
+            let isOnly = true;
+            let url = 'api/bics/filter?';
+            if (BIC.length !== 0) {
+                url += `bic=${BIC}`;
+                isOnly = false;
+            }
+            if (name.length !== 0) {
+                isOnly ? (url += `nameP=${name}`) : (url += `&nameP=${name}`);
+                isOnly = false;
+            }
+            if (type.length !== 0){
+                isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
+            }
+            let response = await fetch(url,{
+                method: 'GET',
+                headers: headers
+            });
+            console.log(url);
+            let data = await response.json();
+            console.log('DATA FROM SEARCH', data);
+            setDataBIC(data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <>
             {isLoading ? (
-                    <Box className={s.loader}>
-                        <Fade in={isLoading} exit={isLoading} className={s.loader__item}>
-                            <CircularProgress/>
-                        </Fade>
-                    </Box>
+                    <Loader isLoading={isLoading}/>
                 ) :
 
                 (<Container className={s.container} fluid>
@@ -181,14 +197,16 @@ const BIC = () => {
                                     <CloseButton onClick={() => setType("")}/>
                                 </div>
                             </label>
-                            <button className={s.search__btn}>
+                            <button className={s.search__btn} onClick={() => {
+                                handleSearch()
+                            }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
                         </Col>
                     </Row>
 
                     <Row className={s.file__content} xs={12}>
-                        <Table bordered hover>
+                        <Table className={s.file__table} bordered hover >
                             <thead>
                             <tr>
                                 {nameColumns.map((item, index) => <th>{item.title}</th>)}
@@ -198,7 +216,7 @@ const BIC = () => {
                             {
                                 dataBIC.map((item, index) => (
                                     <>
-                                        <tr>
+                                        <tr onClick={() => handleOpenSubTable(item.payerId)}>
                                             <td onClick={() => handleOpenSubTable(item.payerId)}>+</td>
                                             <td>{item.payerId}</td>
                                             <td>{item.msgId}</td>
@@ -258,6 +276,28 @@ const BIC = () => {
                             </tbody>
                         </Table>
                     </Row>
+
+                    <Row className={s.pagination}>
+                        <button className={s.pagination__btn} onClick={() => {
+                            setPage(page - 1);
+                            getData((page - 2) * 25);
+                        }}>
+                           <ArrowBackRoundedIcon/>
+                        </button>
+                        <span className={s.pagination__text}>Страница</span>
+                        <input className={s.pagination__input} value={page}
+                               onChange={(e) => {
+                                   setPage(e.target.value)
+                                   getData((e.target.value - 1) * 25);
+                               }}/>
+                        <button className={s.pagination__btn} onClick={() => {
+                            setPage(page + 1);
+                            getData(page * 25);
+                        }}>
+                            <ArrowForwardRoundedIcon/>
+                        </button>
+                    </Row>
+
                 </Container>)
             }
         </>
