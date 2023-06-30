@@ -1,5 +1,5 @@
 FROM node:alpine
-WORKDIR /usr/app/front
+WORKDIR /app
 EXPOSE 3000
 COPY ./ ./
 RUN npm install

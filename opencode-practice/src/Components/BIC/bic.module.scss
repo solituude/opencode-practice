@@ -12,6 +12,7 @@
   flex-direction: column;
   margin: 0 !important;
   padding: 0 !important;
+  height: 100vh;
   //box-sizing: border-box;
 }
 
@@ -103,7 +104,7 @@
   align-items: flex-start;
   //padding: 0 !important;
   margin-top: 118px;
-  //margin-bottom: 0;
+  margin-bottom: 40px;
   overflow-x: auto;
   //height: calc(100vh - 118px) !important;
 }
@@ -209,7 +210,7 @@ td {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(42, 45, 87, 0.2);
+  background: rgba(42, 45, 87, 0.1);
 
   &__item {
     display: flex;
@@ -218,7 +219,7 @@ td {
 }
 
 .pagination {
-  position: sticky;
+  position: fixed;
   display: flex;
   bottom: 0;
   background-color: #ECECF8;
@@ -250,6 +251,12 @@ td {
   &__text{
     display: flex;
     width: fit-content;
+
+    &2 {
+      width: fit-content;
+      display: flex;
+      right: 0 !important;
+    }
   }
 
   &__input {

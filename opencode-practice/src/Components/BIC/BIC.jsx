@@ -1,20 +1,16 @@
 import React, {useEffect, useState} from "react";
 import Table from 'react-bootstrap/Table';
 import {useNavigate, useParams} from "react-router-dom";
-// import s from "../DataBase/bic.module.scss";
 import {CloseButton, Col, Container, Row} from "react-bootstrap";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import searchIcon from "../../img/searchIcon.svg";
 import s from './bic.module.scss';
-import Box from "@mui/material/Box";
-import {Fade} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Loader from "../UI/loader";
-import {bool} from "prop-types";
 
 
 const BIC = () => {
+
     const nameColumns = [
         {title: "",},
         {title: "№",},
@@ -45,10 +41,11 @@ const BIC = () => {
 
     const [page, setPage] = useState(1);
 
-    // const [lastElement, setLastElement] = useState(0);
+    const [lastElem, setLastElem] = useState(0);
 
     const navigate = useNavigate();
     const {id} = useParams();
+    const countBicPerPage = 25;
 
     const username = 'user';
     const password = 'password';
@@ -65,17 +62,39 @@ const BIC = () => {
                 method: 'GET',
                 headers: headers
             });
+
             let data = await response.json();
             console.log('DATA:', data);
             setDataBIC(data);
+            setLastElem(data[data.length - 1].payerId);
+            console.log(lastElem)
             setIsLoading(false);
         } catch (e) {
             console.log(e.message);
         }
     }
 
+
+    const getCount = async () => {
+        try{
+            let response = await fetch(`/api/bics/count?msgId=${id}`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.json();
+            console.log(typeof(data));
+            setCount(data)
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+
+    const [count, setCount] = useState(getCount);
+
+
     useEffect(() => {
-        getData((page - 1) * 25);
+        getData(lastElem);
+        // console.log(lastElem);
     }, []);
 
 
@@ -119,22 +138,9 @@ const BIC = () => {
         }
     }
 
-    const handleSearch = async () => {
-        try{
-            let isOnly = true;
-            let url = 'api/bics/filter?';
-            if (BIC.length !== 0) {
-                url += `bic=${BIC}`;
-                isOnly = false;
-            }
-            if (name.length !== 0) {
-                isOnly ? (url += `nameP=${name}`) : (url += `&nameP=${name}`);
-                isOnly = false;
-            }
-            if (type.length !== 0){
-                isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
-            }
-            let response = await fetch(url,{
+    const handleSearch = async (url) => {
+        try {
+            let response = await fetch(url, {
                 method: 'GET',
                 headers: headers
             });
@@ -146,6 +152,7 @@ const BIC = () => {
             console.log(error.message);
         }
     }
+
 
     return (
         <>
@@ -198,7 +205,20 @@ const BIC = () => {
                                 </div>
                             </label>
                             <button className={s.search__btn} onClick={() => {
-                                handleSearch()
+                                let isOnly = true;
+                                let url = '/api/bics/filter?';
+                                if (BIC.length !== 0) {
+                                    url += `bic=${BIC}`;
+                                    isOnly = false;
+                                }
+                                if (name.length !== 0) {
+                                    isOnly ? (url += `nameP=${name}`) : (url += `&nameP=${name}`);
+                                    isOnly = false;
+                                }
+                                if (type.length !== 0) {
+                                    isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
+                                }
+                                handleSearch(url + `&msgId=${id}`);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -206,7 +226,7 @@ const BIC = () => {
                     </Row>
 
                     <Row className={s.file__content} xs={12}>
-                        <Table className={s.file__table} bordered hover >
+                        <Table className={s.file__table} bordered hover>
                             <thead>
                             <tr>
                                 {nameColumns.map((item, index) => <th>{item.title}</th>)}
@@ -278,24 +298,42 @@ const BIC = () => {
                     </Row>
 
                     <Row className={s.pagination}>
-                        <button className={s.pagination__btn} onClick={() => {
-                            setPage(page - 1);
-                            getData((page - 2) * 25);
-                        }}>
-                           <ArrowBackRoundedIcon/>
-                        </button>
+
+                        {
+                            page === 1 ? (null) : (
+                                <button className={s.pagination__btn} onClick={() => {
+                                    setLastElem(lastElem - countBicPerPage)
+                                    setPage(page - 1);
+                                    getData(lastElem - countBicPerPage * 2);
+                                }}>
+                                    <ArrowBackRoundedIcon/>
+                                </button>
+                            )
+                        }
+
                         <span className={s.pagination__text}>Страница</span>
                         <input className={s.pagination__input} value={page}
                                onChange={(e) => {
-                                   setPage(e.target.value)
-                                   getData((e.target.value - 1) * 25);
+                                   setPage(Number(e.target.value))
+                                   getData((e.target.value - page - 2) * 25 + lastElem);
                                }}/>
-                        <button className={s.pagination__btn} onClick={() => {
-                            setPage(page + 1);
-                            getData(page * 25);
-                        }}>
-                            <ArrowForwardRoundedIcon/>
-                        </button>
+                        <span className={s.pagination__text}>
+                            из {Math.floor(count / countBicPerPage) + 1}
+                        </span>
+                        {
+                            page === (Math.floor(count / countBicPerPage) + 1) ? (null) : (
+                                <button className={s.pagination__btn} onClick={() => {
+                                    setPage(page + 1);
+                                    getData(lastElem);
+                                }}>
+                                    <ArrowForwardRoundedIcon/>
+                                </button>
+                            )
+                        }
+
+                        <span className={s.pagination__text2} style={{right: 0}}>
+                            Всего записей {count}
+                        </span>
                     </Row>
 
                 </Container>)

@@ -38,8 +38,10 @@ const renderPathname = (location) => {
             return <p className={s.pathname}>Справочник. Тип счета в соответствии с нормативом</p>
         case '/ed807':
             return <p className={s.pathname}>Импорт</p>
+        case '/':
+            return <p className={s.pathname}>Импорт</p>
         default:
-            return <p className={s.pathname}>Импорт. БИК</p>
+            return <p className={s.pathname}>Таблица БИК</p>
     }
 }
 

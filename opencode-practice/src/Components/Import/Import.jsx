@@ -8,9 +8,7 @@ import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
-import {Fade} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
+import {message} from "antd";
 
 const Import = () => {
     const [name, setName] = useState("");
@@ -63,6 +61,17 @@ const Import = () => {
 
     const fileInputRef = useRef(null);
     const [selectedFileName, setSelectedFileName] = useState('');
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const successDownload = () => {
+        return(
+            messageApi.open({
+                type: 'success',
+                content: 'Файл успешно загружен',
+            })
+        )
+    }
+
 
     const handleFileSelect = async (event) => {
         const file = event.target.files[0];
@@ -84,6 +93,10 @@ const Import = () => {
             })
             .catch((error) => {
                 console.error('Ошибка:', error);
+                messageApi.open({
+                    type: 'error',
+                    content: 'Ошибка в загрузке файла',
+                });
             })
     }
 
@@ -127,9 +140,13 @@ const Import = () => {
         }
     }
 
+    const [isDelete, setIsDelete] = useState(false);
+
 
     return (
         <>{!isLoading ? (
+            <>
+                {contextHolder}
             <Container className={s.container} fluid>
                 <Row className={s.searches__container}>
                     <Col>
@@ -193,7 +210,7 @@ const Import = () => {
                 </Row>
 
                 <Row className={s.file__content} xs={12}>
-                    <Table className={s.file__table} hover>
+                    <Table className={s.file__table} hover responsive>
                         <thead>
                         <tr>
                             {nameColumns.map((item) => (
@@ -223,19 +240,20 @@ const Import = () => {
                                         <td>{item.directoryVersion}</td>
                                         <td>{item.PartAggregateID}</td>
                                         <td>{item.createdBy}</td>
-                                        <td onClick={() => handleDelete(item.id)}><DeleteOutlineRoundedIcon/></td>
+                                        <td onClick={() => {
+                                            handleDelete(item.id);
+                                            setIsDelete(true);
+                                            message.info('Успешно удалено')
+                                        }}><DeleteOutlineRoundedIcon/></td>
                                     </tr>
-
                                 ))
                             )
-
                         }
                         </tbody>
-
                     </Table>
                 </Row>
             </Container>
-        ) : (<Loader isLoading={isLoading}/>)
+            </>) : (<Loader isLoading={isLoading}/>)
         }</>
     );
 }
