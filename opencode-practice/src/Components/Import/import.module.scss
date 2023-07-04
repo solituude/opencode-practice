@@ -94,13 +94,13 @@
 .file__content {
   display: flex;
   align-items: flex-start;
-  padding: 0 !important;
+  //padding: 0 !important;
 }
 
+
 .file__table {
-  //display: flex;
   font-size: 11px;
-  padding: 0 !important;
+  //margin-top: 10px;
   border: 1px solid #999CA5;
 
   &__col {
@@ -117,12 +117,14 @@ th {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 11px;
+
+  font-size: 12px;
   border-color: #999CA5;
 }
 
 tr {
   vertical-align: center;
+  font-family: 'Roboto', sans-serif;
   padding: 1px !important;
   //border-color: #999CA5;
   border: 1px solid #999CA5;

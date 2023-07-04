@@ -138,7 +138,7 @@ th {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   //border: 1px;
   border: 1px solid #999CA5;
   background-color: #ECECF8 !important;
@@ -156,7 +156,7 @@ td {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid #999CA5;
   text-align: center;
   padding: 4px 2px !important;
@@ -167,8 +167,7 @@ td {
 
 
   &__header {
-    //white-space: nowrap; /* Запрещает перенос текста */
-    overflow: hidden; /* Скрывает выходящий за границы контейнера текст */
+    overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 !important;
     border: 1px solid #999CA5 !important;

@@ -1,9 +1,8 @@
 import React, {useState} from "react";
-import axios from 'axios';
 import FormEmail from "./contentLogin/FormEmail";
 import FromPassword from "./contentLogin/FormPassword";
 import s from './login.module.css'
-const LogIn = () => {
+const LogIn = (props) => {
     // const apiUrl = 'http://localhost:9090';
 
     const [password, setPassword] = useState('');
@@ -11,12 +10,16 @@ const LogIn = () => {
     const [showError, setShowError] = useState(false);
 
     const handleSubmit = async (e) => {
-        setShowError(true);
         e.preventDefault();
         try {
-            const response = await axios.post(`/login`, {email, password});
-            localStorage.setItem('token', response.data.token);
-            window.location.href = '/';
+            // const response = await axios.post(`/login`, {email, password});
+            // localStorage.setItem('token', response.data.token);
+            // window.location.href = '/';
+            const headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(email + ':' + password));
+            localStorage.setItem('tokenAuth', btoa(email + ':' + password));
+            props.setHeaders(headers);
+            props.setIsLoggedIn(true);
         } catch (error) {
             setShowError(true);
         }

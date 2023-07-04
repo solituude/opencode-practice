@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {isCodeEq4Valid, isDataSet, isDateValid} from "./validation";
+import s from "./directories.module.scss";
 
 const ModalEditItemEq4 = (props) => {
 
@@ -64,23 +65,36 @@ const ModalEditItemEq4 = (props) => {
                                       defaultValue={props.data.code}
                                       onChange={(event) =>
                             setCode(event.target.value)}/>
+                        <Form.Label>
+                            {errorCode ? <p className={s.error}>Введите 4 символа</p> : null}
+                        </Form.Label>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Наименование</Form.Label>
                         <Form.Control type="text" value={name} onChange={(event) =>
                             setName(event.target.value)}/>
+                        <Form.Label>
+                            {errorName ? <p className={s.error}>Необходимо заполнить данное поле</p> : null}
+                        </Form.Label>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Период действия с</Form.Label>
-                        <Form.Control type="date" value={validityStart} onChange={(event) =>
+                        <Form.Control type="date" onChange={(event) =>
                             setValidityStart(event.target.value)}/>
+                        <Form.Label>
+                            {errorDate ? <p className={s.error}>Введите корректный период действия</p> : null}
+                        </Form.Label>
                     </Form.Group>
+
                     <Form.Group className="mb-3">
                         <Form.Label>по</Form.Label>
-                        <Form.Control type="date" value={validityEnd} onChange={(event) =>
+                        <Form.Control type="date" onChange={(event) =>
                             setValidityEnd(event.target.value)}/>
+                        <Form.Label>
+                            {errorDate ? <p className={s.error}>Введите корректный период действия</p> : null}
+                        </Form.Label>
                     </Form.Group>
                 </Form>
             </Modal.Body>

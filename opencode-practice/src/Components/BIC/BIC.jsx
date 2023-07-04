@@ -6,12 +6,10 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import searchIcon from "../../img/searchIcon.svg";
 import s from './bic.module.scss';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Loader from "../UI/loader";
 import {message} from "antd";
-import {deepPurple, purple} from "@mui/material/colors";
+import {deepPurple} from "@mui/material/colors";
 
 
 const BIC = () => {
@@ -47,6 +45,7 @@ const BIC = () => {
     const [page, setPage] = useState(1);
 
     const [lastElem, setLastElem] = useState(0);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const navigate = useNavigate();
     const {id} = useParams();
@@ -81,13 +80,13 @@ const BIC = () => {
 
 
     const getCount = async () => {
-        try{
+        try {
             let response = await fetch(`/api/bics/count?msgId=${id}`, {
                 method: 'GET',
                 headers: headers
             });
             let data = await response.json();
-            console.log(typeof(data));
+            console.log(typeof (data));
             setCount(data)
         } catch (e) {
             console.log(e.message);
@@ -99,7 +98,6 @@ const BIC = () => {
 
     useEffect(() => {
         getData(lastElem);
-        // console.log(lastElem);
     }, []);
 
 
@@ -136,7 +134,6 @@ const BIC = () => {
             });
             let data = await response.json();
             console.log('DATA:', data);
-            // setAccounts(data);
             return data;
         } catch (e) {
             console.log(e.message);
@@ -161,10 +158,10 @@ const BIC = () => {
 
     return (
         <>
+            {contextHolder}
             {isLoading ? (
                     <Loader isLoading={isLoading}/>
                 ) :
-
                 (<Container className={s.container} fluid>
                     <Row className={s.return__back}>
                         <button className={s.return__back__btn} onClick={goBack}>
@@ -223,7 +220,8 @@ const BIC = () => {
                                 if (type.length !== 0) {
                                     isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
                                 }
-                                url === '/api/bics/filter?' ? message.info(`Введите значение для поиска`) : handleSearch(url + `&msgId=${id}`);
+                                url === '/api/bics/filter?' ? message.info(`Введите значение для поиска`) :
+                                    handleSearch(url + `&msgId=${id}`);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -243,7 +241,7 @@ const BIC = () => {
                                     <>
                                         <tr onClick={() => handleOpenSubTable(item.payerId)}>
                                             <td onClick={() => handleOpenSubTable(item.payerId)}>
-                                                <AddRoundedIcon sx={{ color: deepPurple[900]}}/></td>
+                                                <AddRoundedIcon sx={{color: deepPurple[900]}}/></td>
                                             <td>{item.payerId}</td>
                                             <td>{item.msgId}</td>
                                             <td>{item.bic}</td>
@@ -264,37 +262,41 @@ const BIC = () => {
                                             <td>{item.participantStatus}</td>
                                         </tr>
                                         {
-                                            isTableOpen && key === item.payerId ? (<tr onClick={() =>
-                                                setIsTableOpen([item.payerId, false])}>
-                                                <td colSpan={19}>
-                                                    {accounts.length === 0 ? (<p>Данные не найдены</p>) : (
-                                                        <Table>
-                                                            <thead>
-                                                            <tr>
-                                                                {columnsAccount.map((item, index) => (
-                                                                    <th>{item.title}</th>
-                                                                ))}
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {
-                                                                accounts.map((item, index) => (
+                                            isTableOpen && key === item.payerId ? (
+                                                <tr onClick={() => setIsTableOpen([item.payerId, false])}>
+                                                    <td colSpan={19}>
+                                                        {accounts.length === 0 ? (<p>Данные не найдены</p>) : (
+                                                            <>
+                                                                <p>Информация о счетах участника перевода денежных средств.</p>
+                                                                <Table>
+                                                                    <thead>
                                                                     <tr>
-                                                                        <td>{item.id}</td>
-                                                                        <td>{item.account}</td>
-                                                                        <td>{item.regulationAccountType}</td>
-                                                                        <td>{item.accountCBRBIC}</td>
-                                                                        <td>{item.ck}</td>
-                                                                        <td>{item.dateIn}</td>
-                                                                        <td>{item.dateOut}</td>
-                                                                        <td>{item.accountStatus}</td>
+                                                                        {columnsAccount.map((item, index) => (
+                                                                            <th>{item.title}</th>
+                                                                        ))}
                                                                     </tr>
-                                                                ))
-                                                            }
-                                                            </tbody>
-                                                        </Table>)}
-                                                </td>
-                                            </tr>) : null
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {
+                                                                        accounts.map((item, index) => (
+                                                                            <tr>
+                                                                                <td>{item.id}</td>
+                                                                                <td>{item.account}</td>
+                                                                                <td>{item.regulationAccountType}</td>
+                                                                                <td>{item.accountCBRBIC}</td>
+                                                                                <td>{item.ck}</td>
+                                                                                <td>{item.dateIn}</td>
+                                                                                <td>{item.dateOut}</td>
+                                                                                <td>{item.accountStatus}</td>
+                                                                            </tr>
+                                                                        ))
+                                                                    }
+                                                                    </tbody>
+                                                                </Table>
+                                                            </>
+                                                            )}
+                                                    </td>
+                                                </tr>) : null
                                         }
                                     </>
                                 ))

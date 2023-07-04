@@ -11,7 +11,7 @@ import Loader from "../UI/loader";
 import {message} from "antd";
 
 
-const Import = () => {
+const Import = (props) => {
     const [name, setName] = useState("");
     const [dateStart, setDateStart] = useState("");
     const [dateEnd, setDateEnd] = useState("");
@@ -75,55 +75,53 @@ const Import = () => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('fileName', selectedFileName);
-        fetch(`/api/ed807/upload`, {
-            method: 'POST',
-            headers: headers,
-            body: formData,
-        })
-            .then((response) => {
-                setIsLoading(true);
-                console.log('Ответ сервера:', response);
-                getData();
+        try {
+            let response = await fetch(`/api/ed807/upload`, {
+                method: 'POST',
+                headers: headers,
+                body: formData,
             })
-            .catch((error) => {
-                console.error('Ошибка:', error);
-                messageApi.open({
-                    type: 'error',
-                    content: 'Ошибка в загрузке файла',
-                });
-            })
+            setIsLoading(true);
+            console.log('Ответ сервера:', response);
+            getData();
+            response.ok ? message.info(`Файл успешно добавлен`) : message.info(`Ошибка в загрузке файла`)
+
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
     }
 
     const handleDelete = async (ID, title) => {
-        fetch(`/api/ed807/${ID}`, {
-            method: 'DELETE',
-            headers: headers
-        })
-            .then((response) => {
-                setIsLoading(true);
-                console.log('Ответ сервера:', response);
-                getData();
-                message.info(`Файл ${title} успешно удалён`)
+        try {
+            let response = await fetch(`/api/ed807/${ID}`, {
+                method: 'DELETE',
+                headers: headers
             })
-            .catch((error) => {
-                console.error('Ошибка:', error);
-            })
+            setIsLoading(true);
+            console.log('Ответ сервера:', response);
+            getData();
+            response.ok ? message.info(`Файл ${title} успешно удалён`) :
+                message.info(`Ошибка в удалении файла`)
+            // message.info(`Файл ${title} успешно удалён`)
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
     }
 
     const handleUpdate = async (ID, title) => {
-        fetch(`/api/ed807/${ID}`, {
-            method: 'PATCH',
-            headers: headers
-        })
-            .then((response) => {
-                setIsLoading(true);
-                console.log('Ответ сервера:', response);
-                getData();
-                message.info(`Файл ${title} успешно обновлён`)
+        try {
+            let response = await fetch(`/api/ed807/${ID}`, {
+                method: 'PATCH',
+                headers: headers
             })
-            .catch((error) => {
-                console.error('Ошибка:', error);
-            })
+            setIsLoading(true);
+            console.log('Ответ сервера:', response);
+            getData();
+            response.ok ? message.info(`Файл ${title} успешно обновлён`):
+                message.info(`Ошибка в обновлении файла`)
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
     }
 
     const handleBrowseClick = () => {
@@ -160,6 +158,7 @@ const Import = () => {
             console.log(e.message);
         }
     }
+
     return (
         <>{!isLoading ? (
             <>

@@ -4,36 +4,14 @@ import {Container} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Import from './Components/Import/Import';
-import AccountStatus from "./Components/Directories/AccountStatus/AccountStatus";
-import RegulationAccountType from "./Components/Directories/RegulationAccountType/RegulationAccountType";
-import Srvcs from "./Components/Directories/Srvcs/Srvcs";
-import ChangeType from "./Components/Directories/ChangeType/ChangeType";
-import XchType from "./Components/Directories/XchType/XchType";
-import ParticipantStatus from "./Components/Directories/ParticipantStatus/ParticipantStatus";
-import CreationReason from "./Components/Directories/CreationReason/CreationReason";
-import AccRstr from "./Components/Directories/AccRstr/AccRstr";
-import Rstr from "./Components/Directories/Rstr/Rstr";
-import InfoTypeCode from "./Components/Directories/InfoTypeCode/InfoTypeCode";
-import PtType from "./Components/Directories/PtType/PtType";
+import Directory from "./Components/Directories/Directory";
 import LogIn from "./Components/LogIn/LogIn";
 import {useState} from "react";
 import BIC from "./Components/BIC/BIC";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
-    // console.log(localStorage.getItem('token'))
-
-    // function handleLogin(token) {
-    //     localStorage.setItem('token', token);
-    //     setIsLoggedIn(true);
-    // }
-    //
-    // function handleLogout() {
-    //     // localStorage.removeItem('token');
-    //     setIsLoggedIn(false);
-    // }
-
-
+    const [headers, setHeaders] = useState();
     return (
         <Container fluid className="content">
             <BrowserRouter>
@@ -44,26 +22,25 @@ function App() {
                             <Route path="/" element={<Import/>}/>
                             <Route path='/ed807' element={<Import/>}/>
                             <Route path='/bics/:id' element={<BIC/>}/>
-                            <Route path='/directories/accountStatus' element={<AccountStatus/>}/>
-                            <Route path='/directories/regulationAccountType' element={<RegulationAccountType/>}/>
-                            <Route path='/directories/srvcs' element={<Srvcs/>}/>
-                            <Route path='/directories/changeType' element={<ChangeType/>}/>
-                            <Route path='/directories/xchType' element={<XchType/>}/>
-                            <Route path='/directories/participantStatus' element={<ParticipantStatus/>}/>
-                            <Route path='/directories/creationReason' element={<CreationReason/>}/>
-                            <Route path='/directories/accRstr' element={<AccRstr/>}/>
-                            <Route path='/directories/rstr' element={<Rstr/>}/>
-                            <Route path='/directories/infoTypeCode' element={<InfoTypeCode/>}/>
-                            <Route path='/directories/ptType' element={<PtType/>}/>
+                            <Route path='/directories/accountStatus' element={<Directory type="accountStatus"/>}/>
+                            <Route path='/directories/regulationAccountType' element={<Directory type="accountType"/>}/>
+                            <Route path='/directories/srvcs' element={<Directory type="availableServices"/>}/>
+                            <Route path='/directories/changeType' element={<Directory type="changeType"/>}/>
+                            <Route path='/directories/xchType' element={<Directory type="exchangeParticipant"/>}/>
+                            <Route path='/directories/participantStatus' element={<Directory type="participantStatus"/>}/>
+                            <Route path='/directories/creationReason' element={<Directory type="creationReason"/>}/>
+                            <Route path='/directories/accRstr' element={<Directory type="limitationOperations"/>}/>
+                            <Route path='/directories/rstr' element={<Directory type="limitationServices"/>}/>
+                            <Route path='/directories/infoTypeCode' element={<Directory type="presentationType"/>}/>
+                            <Route path='/directories/ptType' element={<Directory type="participantType"/>}/>
                         </Routes>
                     </>
                 ) : (
                     <Routes>
-                        <Route path='/' element={<LogIn/>}/>
-                        <Route path='/login' element={<LogIn/>}/>
+                        <Route path='/' element={<LogIn setHeaders={setHeaders} setIsLoggedIn={setIsLoggedIn}/>}/>
+                        <Route path='/login' element={<LogIn setHeaders={setHeaders} setIsLoggedIn={setIsLoggedIn}/>}/>
                     </Routes>
                 )}
-
             </BrowserRouter>
         </Container>
     );
