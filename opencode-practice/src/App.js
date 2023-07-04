@@ -23,20 +23,19 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     // console.log(localStorage.getItem('token'))
 
-    function handleLogin(token) {
-        localStorage.setItem('token', token);
-        setIsLoggedIn(true);
-    }
-
-    function handleLogout() {
-        // localStorage.removeItem('token');
-        setIsLoggedIn(false);
-    }
+    // function handleLogin(token) {
+    //     localStorage.setItem('token', token);
+    //     setIsLoggedIn(true);
+    // }
+    //
+    // function handleLogout() {
+    //     // localStorage.removeItem('token');
+    //     setIsLoggedIn(false);
+    // }
 
 
     return (
         <Container fluid className="content">
-            {console.log(isLoggedIn)}
             <BrowserRouter>
                 {isLoggedIn? (
                     <>

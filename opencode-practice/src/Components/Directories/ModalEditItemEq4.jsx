@@ -2,19 +2,45 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {isCodeEq4Valid, isDataSet, isDateValid} from "./validation";
 
 const ModalEditItemEq4 = (props) => {
-    const [key, setKey] = useState(props.data.key);
+
+    const [code, setCode] = useState(props.data.code);
     const [name, setName] = useState(props.data.name);
-    const [dateIn, setDateIn] = useState(props.data.dateIn);
-    const [dateOut, setDateOut] = useState(props.data.dateOut);
-    const [createDate, setCreateDate] = useState(props.data.createDate);
-    const [createUser, setCreateUser] = useState(props.data.createUser);
-    const [editDate, setEditDate] = useState(props.data.editDate);
-    const [editUser, setEditUser] = useState(props.data.editUser);
+    const [validityStart, setValidityStart] = useState(props.data.validityStart);
+    const [validityEnd, setValidityEnd] = useState(props.data.validityEnd);
+
+    const [errorCode, setErrorCode] = useState(false);
+    const [errorName, setErrorName] = useState(false);
+    const [errorDate, setErrorDate] = useState(false);
 
     const closeModal = () => {
         props.onHide();
+    }
+
+    const handleSubmit = () => {
+        setErrorCode(false);
+        setErrorName(false);
+        setErrorDate(false);
+        if (!isCodeEq4Valid(code)) {
+            setErrorCode(true);
+        }
+        if (!isDataSet(name)) {
+            setErrorName(true)
+        }
+        if (!isDateValid(validityStart, validityEnd)){
+            setErrorDate(true);
+        }
+        else if (isCodeEq4Valid(code) && isDataSet(name) && isDateValid(validityStart, validityEnd)) {
+            setErrorName(false);
+            console.log('here');
+            setErrorCode(false);
+            setErrorDate(false);
+            // addNewItem();
+            props.handleEditItem({"code": code, "name": name, "validityStart": validityStart, "validityEnd": validityEnd})
+            props.onHide();
+        }
     }
 
     return (
@@ -34,10 +60,10 @@ const ModalEditItemEq4 = (props) => {
                     <Form.Group className="mb-3" >
                         <Form.Label>Код</Form.Label>
                         <Form.Control type="text"
-                                      value={key}
-                                      defaultValue={props.data.key}
+                                      value={code}
+                                      defaultValue={props.data.code}
                                       onChange={(event) =>
-                            setKey(event.target.value)}/>
+                            setCode(event.target.value)}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -48,19 +74,19 @@ const ModalEditItemEq4 = (props) => {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Период действия с</Form.Label>
-                        <Form.Control type="text" value={dateIn} onChange={(event) =>
-                            setDateIn(event.target.value)}/>
+                        <Form.Control type="date" value={validityStart} onChange={(event) =>
+                            setValidityStart(event.target.value)}/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>по</Form.Label>
-                        <Form.Control type="text" value={dateOut} onChange={(event) =>
-                            setDateOut(event.target.value)}/>
+                        <Form.Control type="date" value={validityEnd} onChange={(event) =>
+                            setValidityEnd(event.target.value)}/>
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button type="submit">edit</Button>
-                <Button onClick={closeModal}>Close</Button>
+                <Button type="submit" onClick={handleSubmit}>Сохранить изменения</Button>
+                <Button onClick={closeModal}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

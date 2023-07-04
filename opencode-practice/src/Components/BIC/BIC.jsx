@@ -6,7 +6,12 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import searchIcon from "../../img/searchIcon.svg";
 import s from './bic.module.scss';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Loader from "../UI/loader";
+import {message} from "antd";
+import {deepPurple, purple} from "@mui/material/colors";
 
 
 const BIC = () => {
@@ -218,7 +223,7 @@ const BIC = () => {
                                 if (type.length !== 0) {
                                     isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
                                 }
-                                handleSearch(url + `&msgId=${id}`);
+                                url === '/api/bics/filter?' ? message.info(`Введите значение для поиска`) : handleSearch(url + `&msgId=${id}`);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -237,7 +242,8 @@ const BIC = () => {
                                 dataBIC.map((item, index) => (
                                     <>
                                         <tr onClick={() => handleOpenSubTable(item.payerId)}>
-                                            <td onClick={() => handleOpenSubTable(item.payerId)}>+</td>
+                                            <td onClick={() => handleOpenSubTable(item.payerId)}>
+                                                <AddRoundedIcon sx={{ color: deepPurple[900]}}/></td>
                                             <td>{item.payerId}</td>
                                             <td>{item.msgId}</td>
                                             <td>{item.bic}</td>

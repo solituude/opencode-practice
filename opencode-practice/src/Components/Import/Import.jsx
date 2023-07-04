@@ -10,18 +10,26 @@ import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
 import {message} from "antd";
 
+
 const Import = () => {
     const [name, setName] = useState("");
     const [dateStart, setDateStart] = useState("");
     const [dateEnd, setDateEnd] = useState("");
     const [data, setData] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
+    const [selectedFileName, setSelectedFileName] = useState('');
+    const [messageApi, contextHolder] = message.useMessage();
+    const fileInputRef = useRef(null);
     const username = 'user';
     const password = 'password';
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
 
+    useEffect(() => {
+        getData();
+    }, [])
 
     const handleSetDateStart = (event) => {
         setDateStart(event.target.value.toString());
@@ -59,20 +67,6 @@ const Import = () => {
 
     ];
 
-    const fileInputRef = useRef(null);
-    const [selectedFileName, setSelectedFileName] = useState('');
-    const [messageApi, contextHolder] = message.useMessage();
-
-    const successDownload = () => {
-        return(
-            messageApi.open({
-                type: 'success',
-                content: 'Файл успешно загружен',
-            })
-        )
-    }
-
-
     const handleFileSelect = async (event) => {
         const file = event.target.files[0];
         setSelectedFileName(file.name);
@@ -100,7 +94,7 @@ const Import = () => {
             })
     }
 
-    const handleDelete = async (ID) => {
+    const handleDelete = async (ID, title) => {
         fetch(`/api/ed807/${ID}`, {
             method: 'DELETE',
             headers: headers
@@ -109,21 +103,47 @@ const Import = () => {
                 setIsLoading(true);
                 console.log('Ответ сервера:', response);
                 getData();
+                message.info(`Файл ${title} успешно удалён`)
             })
             .catch((error) => {
                 console.error('Ошибка:', error);
             })
     }
 
+    const handleUpdate = async (ID, title) => {
+        fetch(`/api/ed807/${ID}`, {
+            method: 'PATCH',
+            headers: headers
+        })
+            .then((response) => {
+                setIsLoading(true);
+                console.log('Ответ сервера:', response);
+                getData();
+                message.info(`Файл ${title} успешно обновлён`)
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+            })
+    }
 
     const handleBrowseClick = () => {
         fileInputRef.current.click();
     };
 
-
-    useEffect(() => {
-        getData();
-    }, [])
+    const handleSearch = async (url) => {
+        try {
+            let response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+            console.log(url);
+            let data = await response.json();
+            console.log('DATA FROM SEARCH', data);
+            setData(data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
     let getData = async () => {
         try {
@@ -135,124 +155,135 @@ const Import = () => {
             console.log('DATA:', data);
             setData(data);
             setIsLoading(false);
+
         } catch (e) {
             console.log(e.message);
         }
     }
-
-    const [isDelete, setIsDelete] = useState(false);
-
-
     return (
         <>{!isLoading ? (
             <>
                 {contextHolder}
-            <Container className={s.container} fluid>
-                <Row className={s.searches__container}>
-                    <Col>
-                        <label className={s.name__search}>
-                            Наименование:
-                            <div className={s.name__search__textarea}>
-                                <input type="text"
-                                       value={name}
-                                       onChange={handleSetName}
-                                       className={s.textarea}/>
-                                <CloseButton onClick={() => setName("")}/>
-                            </div>
-                        </label>
-                    </Col>
+                <Container className={s.container} fluid>
+                    <Row className={s.searches__container}>
+                        <Col>
+                            <label className={s.name__search}>
+                                Наименование:
+                                <div className={s.name__search__textarea}>
+                                    <input type="text"
+                                           value={name}
+                                           onChange={handleSetName}
+                                           className={s.textarea}/>
+                                    <CloseButton onClick={() => setName("")}/>
+                                </div>
+                            </label>
+                        </Col>
 
-                    <Col xs={7} className={s.date__container}>
-                        <label className={s.date__search}>
-                            Дата загрузки с:
-                            <div className={s.date__search__textarea}>
-                                <input type="date"
-                                       defaultValue=""
-                                       onChange={handleSetDateStart}
-                                       className={s.textarea}/>
-                            </div>
-                        </label>
+                        <Col xs={7} className={s.date__container}>
+                            <label className={s.date__search}>
+                                Дата загрузки с:
+                                <div className={s.date__search__textarea}>
+                                    <input type="date"
+                                           onChange={handleSetDateStart}
+                                           className={s.textarea}/>
+                                </div>
+                            </label>
 
-                        <label className={s.date__search}>
-                            по
-                            <div className={s.date__search__textarea}>
-                                <input type="date"
-                                       onChange={handleSetDateEnd}
-                                       className={s.textarea}/>
-                            </div>
-                        </label>
+                            <label className={s.date__search}>
+                                по
+                                <div className={s.date__search__textarea}>
+                                    <input type="date"
+                                           onChange={handleSetDateEnd}
+                                           className={s.textarea}/>
+                                </div>
+                            </label>
 
-                        <button className={s.search__btn}>
-                            <img src={searchIcon} alt="поиск"/>
+                            <button className={s.search__btn} onClick={() => {
+                                let isOnly = true;
+                                let url = '/api/ed807/filter?';
+                                if (name.length !== 0) {
+                                    url += `title=${name}`;
+                                    isOnly = false;
+                                }
+                                if (dateStart.length !== 0) {
+                                    isOnly ? (url += `date1=${dateStart}`) : (url += `&date1=${dateStart}`);
+                                    isOnly = false;
+                                }
+                                if (dateEnd.length !== 0) {
+                                    isOnly ? (url += `date2=${dateEnd}`) : (url += `&date2=${dateEnd}`);
+                                }
+                                url === '/api/ed807/filter?' ? message.info(`Введите значение для поиска`) : handleSearch(url);
+                            }}>
+                                <img src={searchIcon} alt="поиск"/>
+                            </button>
+
+                            <button className={s.search__btn} onClick={cleanFields}>
+                                <BackspaceOutlinedIcon/>
+                            </button>
+                        </Col>
+                    </Row>
+
+                    <Row className={s.action__field}>
+                        <button className={s.action__field__btn} onClick={handleBrowseClick}>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileSelect}
+                                style={{display: 'none'}}/>
+                            <KeyboardDoubleArrowUpRoundedIcon/>
+                            Импортировать
                         </button>
+                    </Row>
 
-                        <button className={s.search__btn} onClick={cleanFields}>
-                            <BackspaceOutlinedIcon/>
-                        </button>
-                    </Col>
-                </Row>
+                    <Row className={s.file__content} xs={12}>
+                        <Table className={s.file__table} hover responsive>
+                            <thead>
+                            <tr>
+                                {nameColumns.map((item) => (
+                                    <th className={s.file__table__col}>{item.name}</th>
+                                ))}
+                                <th className={s.file__table__col}></th>
+                                <th className={s.file__table__col}></th>
+                            </tr>
+                            </thead>
 
-                <Row className={s.action__field}>
-                    <button className={s.action__field__btn} onClick={handleBrowseClick}>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileSelect}
-                            style={{display: 'none'}}/>
-                        <KeyboardDoubleArrowUpRoundedIcon/>
-                        Импортировать
-                    </button>
-
-                    <button className={s.action__field__btn}>
-                        <UpdateRoundedIcon/>
-                        Обновить
-                    </button>
-                </Row>
-
-                <Row className={s.file__content} xs={12}>
-                    <Table className={s.file__table} hover responsive>
-                        <thead>
-                        <tr>
-                            {nameColumns.map((item) => (
-                                <th className={s.file__table__col}>{item.name}</th>
-                            ))}
-                            <th className={s.file__table__col}></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {
-                            data.length === 0 ? (<tr><td colSpan={19}>Загрузите файл для отображения данных</td></tr>) : (
-                                data.map((item, index) => (
-
-                                    <tr>
-                                        <td>{item.id}</td>
-                                        <td>{item.fileName}</td>
-                                        <td>{item.createdAt}</td>
-                                        <td><NavLink to={`/bics/${item.id}`}>{item.title}</NavLink></td>
-                                        <td>{item.eddate}</td>
-                                        <td>{item.edauthor}</td>
-                                        <td>{item.edreceiver}</td>
-                                        <td>{item.creationReason}</td>
-                                        <td>{item.CreationDateTime}</td>
-                                        <td>{item.infoTypeCode}</td>
-                                        <td style={{minWidth: "80px"}}>{item.businessDay}</td>
-                                        <td>{item.directoryVersion}</td>
-                                        <td>{item.PartAggregateID}</td>
-                                        <td>{item.createdBy}</td>
-                                        <td onClick={() => {
-                                            handleDelete(item.id);
-                                            setIsDelete(true);
-                                            message.info('Успешно удалено')
-                                        }}><DeleteOutlineRoundedIcon/></td>
-                                    </tr>
-                                ))
-                            )
-                        }
-                        </tbody>
-                    </Table>
-                </Row>
-            </Container>
+                            <tbody>
+                            {
+                                data.length === 0 ? (<tr>
+                                    <td colSpan={19}>Данные не найдены</td>
+                                </tr>) : (
+                                    data.map((item, index) => (
+                                        <tr>
+                                            <td>{item.id}</td>
+                                            <td>{item.fileName}</td>
+                                            <td>{item.createdAt}</td>
+                                            <td><NavLink to={`/bics/${item.id}`}>{item.title}</NavLink></td>
+                                            <td>{item.eddate}</td>
+                                            <td>{item.edauthor}</td>
+                                            <td>{item.edreceiver}</td>
+                                            <td>{item.creationReason}</td>
+                                            <td>{item.CreationDateTime}</td>
+                                            <td>{item.infoTypeCode}</td>
+                                            <td style={{minWidth: "80px"}}>{item.businessDay}</td>
+                                            <td>{item.directoryVersion}</td>
+                                            <td>{item.PartAggregateID}</td>
+                                            <td>{item.createdBy}</td>
+                                            <td onClick={() => {
+                                                handleDelete(item.id, item.title);
+                                            }}>
+                                                <DeleteOutlineRoundedIcon/>
+                                            </td>
+                                            <td onClick={() => {
+                                                handleUpdate(item.id, item.title);
+                                            }}><UpdateRoundedIcon/></td>
+                                        </tr>
+                                    ))
+                                )
+                            }
+                            </tbody>
+                        </Table>
+                    </Row>
+                </Container>
             </>) : (<Loader isLoading={isLoading}/>)
         }</>
     );

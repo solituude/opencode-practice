@@ -4,53 +4,59 @@ import {Form} from "react-bootstrap";
 import {useState} from "react";
 import {isCodeEq4Valid} from "./validation";
 import {isDataSet} from "./validation";
+import {isDateValid} from "./validation";
 import s from './directories.module.scss';
 
 const ModalNewItemEq4 = (props) => {
-    const [key, setKey] = useState("");
+    const [code, setCode] = useState("");
     const [name, setName] = useState("");
-    const [dateIn, setDateIn] = useState("");
-    const [dateOut, setDateOut] = useState("");
-    const [createDate, setCreateDate] = useState("");
-    const [createUser, setCreateUser] = useState("");
-    const [editDate, setEditDate] = useState("");
-    const [editUser, setEditUser] = useState("");
+    const [validityStart, setValidityStart] = useState("");
+    const [validityEnd, setValidityEnd] = useState("");
+    // const [createdAt, setCreatedAt] = useState("");
+    // const [createdBy, setCreatedBy] = useState("");
+    // const [updatedAt, setUpdatedAt] = useState("");
+    // const [updatedBy, setUpdatedBy] = useState("");
 
 
-    const [errorKey, setErrorKey] = useState(false);
+    const [errorCode, setErrorCode] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorDate, setErrorDate] = useState(false);
 
     const cleanForm = () => {
-        setKey("");
+        setCode("");
         setName("");
-        setDateIn("");
-        setDateOut("");
-        setCreateDate("");
-        setCreateUser("");
-        setEditDate("");
-        setEditUser("");
+        setValidityStart("");
+        setValidityEnd("");
+        // setCreatedAt("");
+        // setCreatedBy("");
+        // setUpdatedAt("");
+        // setUpdatedBy("");
     }
 
     const handleSubmit = () => {
-        setErrorKey(false);
+        setErrorCode(false);
         setErrorName(false);
-        if (!isCodeEq4Valid(key)) {
-            setErrorKey(true);
+        setErrorDate(false);
+        if (!isCodeEq4Valid(code)) {
+            setErrorCode(true);
         }
         if (!isDataSet(name)) {
             setErrorName(true);
         }
-        else if (isCodeEq4Valid(key) && isDataSet(name)) {
+        if (!isDateValid(validityStart, validityEnd)){
+            setErrorDate(true);
+        }
+        else if (isCodeEq4Valid(code) && isDataSet(name) && isDateValid(validityStart, validityEnd)) {
             setErrorName(false);
             console.log('here');
-            setErrorKey(false);
+            setErrorCode(false);
+            setErrorDate(false);
             addNewItem();
         }
     }
 
     const addNewItem = () => {
-        props.setNewDate({key, name, dateIn, dateOut, createDate, createUser, editDate, editUser});
+        props.setNewDate({"code": code, "name": name, "validityStart": validityStart, "validityEnd": validityEnd});
         cleanForm();
         props.onHide();
     }
@@ -58,7 +64,7 @@ const ModalNewItemEq4 = (props) => {
     const closeModal = () => {
         cleanForm();
         setErrorName(false);
-        setErrorKey(false);
+        setErrorCode(false);
         props.onHide();
     }
 
@@ -80,12 +86,12 @@ const ModalNewItemEq4 = (props) => {
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" >
                         <Form.Label>Код</Form.Label>
-                        <Form.Control type="text" value={key} onChange={(event) => {
-                            setKey(event.target.value);
-                            setErrorKey(false);
+                        <Form.Control type="text" value={code} onChange={(event) => {
+                            setCode(event.target.value);
+                            setErrorCode(false);
                         }}/>
                         <Form.Label>
-                            {errorKey ? <p className={s.error}>Введите 4 символа</p> : null}
+                            {errorCode ? <p className={s.error}>Введите 4 символа</p> : null}
                         </Form.Label>
 
                     </Form.Group>
@@ -100,11 +106,33 @@ const ModalNewItemEq4 = (props) => {
                             {errorName ? <p className={s.error}>Необходимо заполнить данное поле</p> : null}
                         </Form.Label>
                     </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Начало действия</Form.Label>
+                        <Form.Control type="date" onChange={(event) => {
+                            setValidityStart(event.target.value);
+                            setErrorDate(false);
+                        }}/>
+                        <Form.Label>
+                            {errorDate ? <p className={s.error}>Введите корректный период действия</p> : null}
+                        </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Окончание действия</Form.Label>
+                        <Form.Control type="date" onChange={(event) => {
+                            setValidityEnd(event.target.value);
+                            setErrorDate(false);
+                        }}/>
+                        <Form.Label>
+                            {errorDate ? <p className={s.error}>Введите корректный период действия</p> : null}
+                        </Form.Label>
+                    </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleSubmit} type="submit">add</Button>
-                <Button onClick={closeModal}>Close</Button>
+                <Button onClick={handleSubmit} type="submit">Добавить</Button>
+                <Button onClick={closeModal}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );
