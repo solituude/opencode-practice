@@ -10,6 +10,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Loader from "../UI/loader";
 import {message} from "antd";
 import {deepPurple} from "@mui/material/colors";
+import axios from "axios";
+import ExpandedTable from "./ExpandedTable";
 
 
 const BIC = () => {
@@ -86,7 +88,6 @@ const BIC = () => {
                 headers: headers
             });
             let data = await response.json();
-            console.log(typeof (data));
             setCount(data)
         } catch (e) {
             console.log(e.message);
@@ -100,20 +101,24 @@ const BIC = () => {
         getData(lastElem);
     }, []);
 
-
-    const columnsAccount = [
-        {title: "№",},
-        {title: "Номер счета",},
-        {title: "Тип счета",},
-        {title: "БИК ПБР",},
-        {title: "Контрольный ключ",},
-        {title: "Дата открытия счета",},
-        {title: "Дата исключения информации о счете",},
-        {title: "Статус счета",},
-    ];
+    //
+    // const columnsAccount = [
+    //     {title: "№",},
+    //     {title: "Номер счета",},
+    //     {title: "Тип счета",},
+    //     {title: "БИК ПБР",},
+    //     {title: "Контрольный ключ",},
+    //     {title: "Дата открытия счета",},
+    //     {title: "Дата исключения информации о счете",},
+    //     {title: "Статус счета",},
+    // ];
 
     const [[key, isTableOpen], setIsTableOpen] = useState([undefined, false]);
     const [accounts, setAccounts] = useState([]);
+
+    const [rstrList, setRstrList] = useState({});
+    const [swbics, setSwbics] = useState([]);
+
 
     const handleOpenSubTable = (payerId) => {
         // setIsTableOpen(false);
@@ -124,6 +129,20 @@ const BIC = () => {
                 setIsLoading(false);
             })
             .catch(e => console.log(e.message));
+        getRstrList(payerId)
+            .then(rstrList => {
+                console.log("rstrList", rstrList)
+                setRstrList(rstrList);
+            })
+            .catch(e => console.log(e.message));
+        getSWBICS(payerId)
+            .then(swbic => {
+                setSwbics(swbic);
+            })
+            .catch(e => console.log(e.message));
+
+        // setIsTableOpen([payerId, !isTableOpen]);
+        // setIsLoading(false);
     }
 
     const getAccounts = async (payerID) => {
@@ -133,7 +152,50 @@ const BIC = () => {
                 headers: headers
             });
             let data = await response.json();
-            console.log('DATA:', data);
+            console.log('accounts:', data);
+            return data;
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+
+    const getRstrList = async (ID) => {
+        try {
+            let response = await fetch(`/api/rstrList?id=${ID}`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.text();
+            // console.log('rstrList:', typeof data);
+            return data.length === 0 ? {} : JSON.parse(data);
+        } catch (e) {
+            console.log(e.message);
+        }
+
+    }
+
+    const getSWBICS = async (ID) => {
+        try {
+            let response = await fetch(`/api/swbics?id=${ID}`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.json();
+            console.log('swbics:', data);
+            return data;
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+
+    const getAccRstrList = async (ID) => {
+        try {
+            let response = await fetch(`/api/accRstr?id=${ID}`, {
+                method: 'GET',
+                headers: headers
+            });
+            let data = await response.json();
+            console.log('accRstrList:', data);
             return data;
         } catch (e) {
             console.log(e.message);
@@ -263,38 +325,99 @@ const BIC = () => {
                                         </tr>
                                         {
                                             isTableOpen && key === item.payerId ? (
-                                                <tr onClick={() => setIsTableOpen([item.payerId, false])}>
-                                                    <td colSpan={19}>
-                                                        {accounts.length === 0 ? (<p>Данные не найдены</p>) : (
-                                                            <>
-                                                                <p>Информация о счетах участника перевода денежных средств.</p>
-                                                                <Table>
-                                                                    <thead>
-                                                                    <tr>
-                                                                        {columnsAccount.map((item, index) => (
-                                                                            <th>{item.title}</th>
-                                                                        ))}
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    {
-                                                                        accounts.map((item, index) => (
-                                                                            <tr>
-                                                                                <td>{item.id}</td>
-                                                                                <td>{item.account}</td>
-                                                                                <td>{item.regulationAccountType}</td>
-                                                                                <td>{item.accountCBRBIC}</td>
-                                                                                <td>{item.ck}</td>
-                                                                                <td>{item.dateIn}</td>
-                                                                                <td>{item.dateOut}</td>
-                                                                                <td>{item.accountStatus}</td>
-                                                                            </tr>
-                                                                        ))
-                                                                    }
-                                                                    </tbody>
-                                                                </Table>
-                                                            </>
-                                                            )}
+                                                <tr>
+                                                    <td style={{backgroundColor: "#EDF3F8"}} colSpan={19}>
+                                                        <ExpandedTable headers={headers}
+                                                                       accounts={accounts}
+                                                                       rstrList={rstrList}
+                                                                       swbics={swbics}
+                                                                       bic={item.bic}
+                                                        />
+                                                        {/*{*/}
+                                                        {/*    accounts.length === 0 && rstrList.length === 0 && swbics.length === 0 ?*/}
+                                                        {/*        (<p>Данные не найдены</p>) :*/}
+                                                        {/*        (*/}
+                                                        {/*            <>*/}
+                                                        {/*                {*/}
+                                                        {/*                    rstrList.length === 0 ? null : (*/}
+                                                        {/*                        <>*/}
+                                                        {/*                            <p>Перечень ограничений участника</p>*/}
+                                                        {/*                            <Table responsive hover>*/}
+                                                        {/*                                <thead>*/}
+                                                        {/*                                <tr>*/}
+                                                        {/*                                    <th>Код ограничения</th>*/}
+                                                        {/*                                    <th>Дата начала действия ограничения</th>*/}
+                                                        {/*                                </tr>*/}
+                                                        {/*                                </thead>*/}
+                                                        {/*                                <tbody>*/}
+                                                        {/*                                <tr>*/}
+                                                        {/*                                    <td>{rstrList.rstr}</td>*/}
+                                                        {/*                                    <tr>{rstrList.rstrDate}</tr>*/}
+                                                        {/*                                </tr>*/}
+                                                        {/*                                </tbody>*/}
+                                                        {/*                            </Table>*/}
+                                                        {/*                        </>*/}
+                                                        {/*                    )*/}
+                                                        {/*                }*/}
+
+                                                        {/*                {*/}
+                                                        {/*                    swbics.length === 0 ? null : (*/}
+                                                        {/*                        <>*/}
+                                                        {/*                            <p>Перечень БИК, соответствующий участнику</p>*/}
+                                                        {/*                            <Table responsive hover>*/}
+                                                        {/*                                <thead>*/}
+                                                        {/*                                <tr>*/}
+                                                        {/*                                    <th>БИК</th>*/}
+                                                        {/*                                    <th>Признак использования БИК</th>*/}
+                                                        {/*                                </tr>*/}
+                                                        {/*                                </thead>*/}
+                                                        {/*                                <tbody>*/}
+                                                        {/*                                <tr>*/}
+                                                        {/*                                    <td>{swbics.id}</td>*/}
+                                                        {/*                                    <td>{swbics.swbic}</td>*/}
+                                                        {/*                                    <tr>{swbics.defaultSWBIC}</tr>*/}
+                                                        {/*                                </tr>*/}
+                                                        {/*                                </tbody>*/}
+                                                        {/*                            </Table>*/}
+                                                        {/*                        </>*/}
+                                                        {/*                    )*/}
+                                                        {/*                }*/}
+                                                        {/*                {*/}
+                                                        {/*                    accounts.length === 0 ? null : (*/}
+                                                        {/*                        <>*/}
+                                                        {/*                            <p>Информация о счетах участника перевода*/}
+                                                        {/*                                денежных средств.</p>*/}
+                                                        {/*                            <Table responsive hover>*/}
+                                                        {/*                                <thead>*/}
+                                                        {/*                                <tr>*/}
+                                                        {/*                                    {columnsAccount.map((item, index) => (*/}
+                                                        {/*                                        <th>{item.title}</th>*/}
+                                                        {/*                                    ))}*/}
+                                                        {/*                                </tr>*/}
+                                                        {/*                                </thead>*/}
+                                                        {/*                                <tbody>*/}
+                                                        {/*                                {*/}
+                                                        {/*                                    accounts.map((item, index) => (*/}
+                                                        {/*                                        <tr>*/}
+                                                        {/*                                            <td>{item.id}</td>*/}
+                                                        {/*                                            <td>{item.account}</td>*/}
+                                                        {/*                                            <td>{item.regulationAccountType}</td>*/}
+                                                        {/*                                            <td>{item.accountCBRBIC}</td>*/}
+                                                        {/*                                            <td>{item.ck}</td>*/}
+                                                        {/*                                            <td>{item.dateIn}</td>*/}
+                                                        {/*                                            <td>{item.dateOut}</td>*/}
+                                                        {/*                                            <td>{item.accountStatus}</td>*/}
+                                                        {/*                                        </tr>*/}
+                                                        {/*                                    ))*/}
+                                                        {/*                                }*/}
+                                                        {/*                                </tbody>*/}
+                                                        {/*                            </Table>*/}
+                                                        {/*                        </>*/}
+                                                        {/*                    )*/}
+                                                        {/*                }*/}
+                                                        {/*            </>*/}
+                                                        {/*        )*/}
+                                                        {/*}*/}
                                                     </td>
                                                 </tr>) : null
                                         }
@@ -318,7 +441,6 @@ const BIC = () => {
                                 </button>
                             )
                         }
-
                         <span className={s.pagination__text}>Страница</span>
                         <input className={s.pagination__input} value={page}
                                onChange={(e) => {
@@ -338,12 +460,10 @@ const BIC = () => {
                                 </button>
                             )
                         }
-
                         <span className={s.pagination__text2} style={{right: 0}}>
                             Всего записей {count}
                         </span>
                     </Row>
-
                 </Container>)
             }
         </>
