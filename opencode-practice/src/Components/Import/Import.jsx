@@ -6,6 +6,7 @@ import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDouble
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
 import {message} from "antd";
@@ -20,12 +21,16 @@ const Import = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedFileName, setSelectedFileName] = useState('');
+    const [selectefFile, setSelectedFile] = useState();
+
     const [messageApi, contextHolder] = message.useMessage();
     const fileInputRef = useRef(null);
     const username = 'user';
     const password = 'password';
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+
+    const [params, setParams] = useState({});
 
     useEffect(() => {
         getData();
@@ -69,6 +74,7 @@ const Import = () => {
 
     const handleFileSelect = async (event) => {
         const file = event.target.files[0];
+        setSelectedFile(file);
         setSelectedFileName(file.name);
         console.log(file);
 
@@ -117,7 +123,7 @@ const Import = () => {
             setIsLoading(true);
             console.log('Ответ сервера:', response);
             getData();
-            response.ok ? message.info(`Файл ${title} успешно обновлён`):
+            response.ok ? message.info(`Файл ${title} успешно обновлён`) :
                 message.info(`Ошибка в обновлении файла`)
         } catch (error) {
             console.error('Ошибка:', error);
@@ -128,16 +134,36 @@ const Import = () => {
         fileInputRef.current.click();
     };
 
-    const handleSearch = async (url) => {
+    const handleSearch = async (obj) => {
         try {
-            let response = await fetch(url, {
+            let response = await fetch(`/api/ed807/filter`, {
                 method: 'GET',
-                headers: headers
+                headers: headers,
+                body: obj
             });
-            console.log(url);
             let data = await response.json();
             console.log('DATA FROM SEARCH', data);
             setData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const [visibleButton, setVisibleButton] = useState(true);
+
+    const handleActualization = async () => {
+        setIsLoading(true);
+        try {
+            let response = await fetch('/api/ed807/actualization', {
+                method: 'GET',
+                headers: headers
+            });
+            console.log(response.text());
+            setVisibleButton(false);
+            getData();
+            setTimeout(() => {
+                setVisibleButton(true); // Показать кнопку через 10 секунд
+            }, 10000);
         } catch (error) {
             console.log(error.message);
         }
@@ -198,20 +224,18 @@ const Import = () => {
                             </label>
 
                             <button className={s.search__btn} onClick={() => {
-                                let isOnly = true;
-                                let url = '/api/ed807/filter?';
                                 if (name.length !== 0) {
-                                    url += `title=${name}`;
-                                    isOnly = false;
+                                    params.title = name;
                                 }
                                 if (dateStart.length !== 0) {
-                                    isOnly ? (url += `date1=${dateStart}`) : (url += `&date1=${dateStart}`);
-                                    isOnly = false;
+                                    params.date1 = dateStart;
                                 }
                                 if (dateEnd.length !== 0) {
-                                    isOnly ? (url += `date2=${dateEnd}`) : (url += `&date2=${dateEnd}`);
+                                    params.date2 = dateEnd;
                                 }
-                                url === '/api/ed807/filter?' ? message.info(`Введите значение для поиска`) : handleSearch(url);
+                                const queryString = new URLSearchParams(params).toString();
+                                console.log(params);
+                                queryString.length === 0 ? message.info(`Введите значение для поиска`) : handleSearch(params);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -232,6 +256,16 @@ const Import = () => {
                             <KeyboardDoubleArrowUpRoundedIcon/>
                             Импортировать
                         </button>
+                        {
+                            visibleButton ? (
+                                <button className={s.action__field__btn} onClick={handleActualization}>
+                                    <ReplayRoundedIcon/>
+                                    Загрузить актуальные данные
+                                </button>
+                            ) : null
+                        }
+
+
                     </Row>
 
                     <Row className={s.file__content} xs={12}>
