@@ -6,14 +6,11 @@
 
 .container {
   display: flex;
-  //width: 100vw;
-  //height: calc(100vh - 52px);
   background: #F9FAFF;
   flex-direction: column;
   margin: 0 !important;
   padding: 0 !important;
   height: 100vh;
-  //box-sizing: border-box;
 }
 
 .searches__container {
@@ -25,7 +22,6 @@
   margin-top: 82px;
 
   height: 36px;
-  //max-height: fit-content;
   background: #CECEE4;
   color: #303752;
 }
@@ -58,7 +54,6 @@
 }
 
 .textarea {
-  //width: 460px;
   width: 100%;
   height: 16px !important;
   font-size: 12px;
@@ -102,26 +97,15 @@
 .file__content {
   display: flex;
   align-items: flex-start;
-  //padding: 0 !important;
   margin-top: 118px;
   margin-bottom: 40px;
   overflow-x: auto;
-  //height: calc(100vh - 118px) !important;
 }
 
 
 
 .file__table {
-  //display: flex;
   font-size: 11px;
-
-  //padding-bottom: 0!important;
-  //padding: 0 !important;
-  //padding-left: 0 !important;
-  //padding-right: 0 !important;
-  //margin-left: 0 !important;
-  //border: 1px solid #999CA5;
-  //overflow-y: scroll;
 
   &__col {
     border: 1px solid #999CA5;
@@ -139,7 +123,6 @@ th {
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
-  //border: 1px;
   border: 1px solid #999CA5;
   background-color: #ECECF8 !important;
 
@@ -228,8 +211,6 @@ td {
   box-sizing: border-box;
   min-width: 100vw;
   flex-direction: row;
-  //width: 100%;
-  //max-width: 1373px;
   &__btn {
     display: flex;
     width: fit-content;
@@ -243,8 +224,6 @@ td {
       background: #b6b6ce;
       border-radius: 4px;
     }
-
-
   }
 
   &__text{
@@ -266,7 +245,6 @@ td {
     border: 0;
     border-radius: 4px;
   }
-
 }
 
 .exp__header {

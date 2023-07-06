@@ -10,7 +10,6 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Loader from "../UI/loader";
 import {message} from "antd";
 import {deepPurple} from "@mui/material/colors";
-import axios from "axios";
 import ExpandedTable from "./ExpandedTable";
 
 
@@ -101,17 +100,6 @@ const BIC = () => {
         getData(lastElem);
     }, []);
 
-    //
-    // const columnsAccount = [
-    //     {title: "№",},
-    //     {title: "Номер счета",},
-    //     {title: "Тип счета",},
-    //     {title: "БИК ПБР",},
-    //     {title: "Контрольный ключ",},
-    //     {title: "Дата открытия счета",},
-    //     {title: "Дата исключения информации о счете",},
-    //     {title: "Статус счета",},
-    // ];
 
     const [[key, isTableOpen], setIsTableOpen] = useState([undefined, false]);
     const [accounts, setAccounts] = useState([]);
@@ -121,7 +109,6 @@ const BIC = () => {
 
 
     const handleOpenSubTable = (payerId) => {
-        // setIsTableOpen(false);
         getAccounts(payerId)
             .then(accounts => {
                 setAccounts(accounts);
@@ -140,9 +127,6 @@ const BIC = () => {
                 setSwbics(swbic);
             })
             .catch(e => console.log(e.message));
-
-        // setIsTableOpen([payerId, !isTableOpen]);
-        // setIsLoading(false);
     }
 
     const getAccounts = async (payerID) => {
@@ -166,7 +150,6 @@ const BIC = () => {
                 headers: headers
             });
             let data = await response.text();
-            // console.log('rstrList:', typeof data);
             return data.length === 0 ? {} : JSON.parse(data);
         } catch (e) {
             console.log(e.message);
@@ -182,20 +165,6 @@ const BIC = () => {
             });
             let data = await response.json();
             console.log('swbics:', data);
-            return data;
-        } catch (e) {
-            console.log(e.message);
-        }
-    }
-
-    const getAccRstrList = async (ID) => {
-        try {
-            let response = await fetch(`/api/accRstr?id=${ID}`, {
-                method: 'GET',
-                headers: headers
-            });
-            let data = await response.json();
-            console.log('accRstrList:', data);
             return data;
         } catch (e) {
             console.log(e.message);
@@ -331,93 +300,7 @@ const BIC = () => {
                                                                        accounts={accounts}
                                                                        rstrList={rstrList}
                                                                        swbics={swbics}
-                                                                       bic={item.bic}
-                                                        />
-                                                        {/*{*/}
-                                                        {/*    accounts.length === 0 && rstrList.length === 0 && swbics.length === 0 ?*/}
-                                                        {/*        (<p>Данные не найдены</p>) :*/}
-                                                        {/*        (*/}
-                                                        {/*            <>*/}
-                                                        {/*                {*/}
-                                                        {/*                    rstrList.length === 0 ? null : (*/}
-                                                        {/*                        <>*/}
-                                                        {/*                            <p>Перечень ограничений участника</p>*/}
-                                                        {/*                            <Table responsive hover>*/}
-                                                        {/*                                <thead>*/}
-                                                        {/*                                <tr>*/}
-                                                        {/*                                    <th>Код ограничения</th>*/}
-                                                        {/*                                    <th>Дата начала действия ограничения</th>*/}
-                                                        {/*                                </tr>*/}
-                                                        {/*                                </thead>*/}
-                                                        {/*                                <tbody>*/}
-                                                        {/*                                <tr>*/}
-                                                        {/*                                    <td>{rstrList.rstr}</td>*/}
-                                                        {/*                                    <tr>{rstrList.rstrDate}</tr>*/}
-                                                        {/*                                </tr>*/}
-                                                        {/*                                </tbody>*/}
-                                                        {/*                            </Table>*/}
-                                                        {/*                        </>*/}
-                                                        {/*                    )*/}
-                                                        {/*                }*/}
-
-                                                        {/*                {*/}
-                                                        {/*                    swbics.length === 0 ? null : (*/}
-                                                        {/*                        <>*/}
-                                                        {/*                            <p>Перечень БИК, соответствующий участнику</p>*/}
-                                                        {/*                            <Table responsive hover>*/}
-                                                        {/*                                <thead>*/}
-                                                        {/*                                <tr>*/}
-                                                        {/*                                    <th>БИК</th>*/}
-                                                        {/*                                    <th>Признак использования БИК</th>*/}
-                                                        {/*                                </tr>*/}
-                                                        {/*                                </thead>*/}
-                                                        {/*                                <tbody>*/}
-                                                        {/*                                <tr>*/}
-                                                        {/*                                    <td>{swbics.id}</td>*/}
-                                                        {/*                                    <td>{swbics.swbic}</td>*/}
-                                                        {/*                                    <tr>{swbics.defaultSWBIC}</tr>*/}
-                                                        {/*                                </tr>*/}
-                                                        {/*                                </tbody>*/}
-                                                        {/*                            </Table>*/}
-                                                        {/*                        </>*/}
-                                                        {/*                    )*/}
-                                                        {/*                }*/}
-                                                        {/*                {*/}
-                                                        {/*                    accounts.length === 0 ? null : (*/}
-                                                        {/*                        <>*/}
-                                                        {/*                            <p>Информация о счетах участника перевода*/}
-                                                        {/*                                денежных средств.</p>*/}
-                                                        {/*                            <Table responsive hover>*/}
-                                                        {/*                                <thead>*/}
-                                                        {/*                                <tr>*/}
-                                                        {/*                                    {columnsAccount.map((item, index) => (*/}
-                                                        {/*                                        <th>{item.title}</th>*/}
-                                                        {/*                                    ))}*/}
-                                                        {/*                                </tr>*/}
-                                                        {/*                                </thead>*/}
-                                                        {/*                                <tbody>*/}
-                                                        {/*                                {*/}
-                                                        {/*                                    accounts.map((item, index) => (*/}
-                                                        {/*                                        <tr>*/}
-                                                        {/*                                            <td>{item.id}</td>*/}
-                                                        {/*                                            <td>{item.account}</td>*/}
-                                                        {/*                                            <td>{item.regulationAccountType}</td>*/}
-                                                        {/*                                            <td>{item.accountCBRBIC}</td>*/}
-                                                        {/*                                            <td>{item.ck}</td>*/}
-                                                        {/*                                            <td>{item.dateIn}</td>*/}
-                                                        {/*                                            <td>{item.dateOut}</td>*/}
-                                                        {/*                                            <td>{item.accountStatus}</td>*/}
-                                                        {/*                                        </tr>*/}
-                                                        {/*                                    ))*/}
-                                                        {/*                                }*/}
-                                                        {/*                                </tbody>*/}
-                                                        {/*                            </Table>*/}
-                                                        {/*                        </>*/}
-                                                        {/*                    )*/}
-                                                        {/*                }*/}
-                                                        {/*            </>*/}
-                                                        {/*        )*/}
-                                                        {/*}*/}
+                                                                       bic={item.bic}/>
                                                     </td>
                                                 </tr>) : null
                                         }
@@ -429,7 +312,6 @@ const BIC = () => {
                     </Row>
 
                     <Row className={s.pagination}>
-
                         {
                             page === 1 ? (null) : (
                                 <button className={s.pagination__btn} onClick={() => {

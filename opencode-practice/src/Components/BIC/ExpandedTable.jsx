@@ -32,7 +32,6 @@ const ExpandedTable = (props) => {
 
 
     const handleOpenSubTable = (accId) => {
-        // setIsTableOpen(false);
         getAccRstrList(accId)
             .then(accRstr => {
                 setAccRstrList(accRstr);
@@ -40,9 +39,6 @@ const ExpandedTable = (props) => {
                 setIsLoading(false);
             })
             .catch(e => console.log(e.message));
-
-        // setIsTableOpen([payerId, !isTableOpen]);
-        // setIsLoading(false);
     }
 
     const getAccRstrList = async(accId) => {
@@ -71,7 +67,6 @@ const ExpandedTable = (props) => {
                                 {
                                     Object.keys(rstrList).length === 0 ? null : (
                                         <>
-                                            {/*<p>Перечень ограничений участника</p>*/}
                                             <Table responsive hover>
                                                 <thead>
                                                 <tr>
@@ -92,13 +87,13 @@ const ExpandedTable = (props) => {
                                         </>
                                     )
                                 }
-
                                 {
                                     swbics.length === 0 ? null : (
                                         <>
                                             <Table responsive hover>
                                                 <thead>
-                                                <tr><th colSpan={3} className={s.exp__header}>Перечень БИК, соответствующий участнику</th></tr>
+                                                <tr><th colSpan={3} className={s.exp__header}>Перечень БИК,
+                                                    соответствующий участнику</th></tr>
                                                 <tr>
                                                     <th className={s.exp__header}>№</th>
                                                     <th className={s.exp__header}>БИК</th>
@@ -107,7 +102,7 @@ const ExpandedTable = (props) => {
                                                 </thead>
                                                 <tbody>
                                                 {
-                                                    swbics.map((item, key) => (
+                                                    swbics.map((item) => (
                                                         <tr>
                                                             <td>{item.id}</td>
                                                             <td>{item.swbic}</td>
@@ -131,14 +126,14 @@ const ExpandedTable = (props) => {
                                                         денежных средств.</th>
                                                 </tr>
                                                 <tr>
-                                                    {columnsAccount.map((item, index) => (
+                                                    {columnsAccount.map((item) => (
                                                         <th className={s.exp__header}>{item.title}</th>
                                                     ))}
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 {
-                                                    accounts.map((item, index) => (
+                                                    accounts.map((item) => (
                                                         <>
                                                             <tr onClick={() => handleOpenSubTable(item.id)}>
                                                                 <td>{item.id}</td>
@@ -166,7 +161,7 @@ const ExpandedTable = (props) => {
                                                                                         </thead>
                                                                                         <tbody>
                                                                                         {
-                                                                                            accRstrList.map((item, key) => (
+                                                                                            accRstrList.map((item) => (
                                                                                                 <tr>
                                                                                                     <td>{item.accRstr}</td>
                                                                                                     <td>{item.accRstrDate}</td>

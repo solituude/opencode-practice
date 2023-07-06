@@ -1,16 +1,9 @@
 import React from "react";
 import s from './header.module.scss';
-import {Avatar} from "@mui/material";
-import {Col, Row, Dropdown} from "react-bootstrap";
-import exitIcon from '../../img/exitIcon.svg';
+import {Col, Row} from "react-bootstrap";
 import Menu from "../Menu/Menu";
 import {useLocation} from "react-router-dom";
 
-const userData = {
-    surname: "Иванов",
-    name: "Иван",
-    patronymic: "Иванович"
-}
 
 const renderPathname = (location) => {
     switch (location){
@@ -54,7 +47,6 @@ const Header = () => {
                 <Menu/>
                 {renderPathname(location)}
             </Col>
-
         </Row>
     );
 }

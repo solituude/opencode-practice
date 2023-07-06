@@ -1,7 +1,6 @@
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {Form} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {isCodeEq4Valid, isDataSet, isDateValid} from "./validation";
 import s from "./directories.module.scss";
 
@@ -24,7 +23,7 @@ const ModalEditItemEq4 = (props) => {
         setErrorCode(false);
         setErrorName(false);
         setErrorDate(false);
-        if (!isCodeEq4Valid(code)) {
+        if (!isCodeEq4Valid(code, props.type)) {
             setErrorCode(true);
         }
         if (!isDataSet(name)) {
@@ -38,10 +37,24 @@ const ModalEditItemEq4 = (props) => {
             console.log('here');
             setErrorCode(false);
             setErrorDate(false);
-            // addNewItem();
             props.handleEditItem({"code": code, "name": name, "validityStart": validityStart, "validityEnd": validityEnd})
             props.onHide();
         }
+    }
+
+    let countSymbols;
+    switch (props.type){
+        case 'participantType':
+            countSymbols = 2;
+            break;
+        case 'availableServices':
+            countSymbols = 1;
+            break;
+        case 'exchangeParticipant':
+            countSymbols = 1;
+            break;
+        default:
+            countSymbols = 4;
     }
 
     return (
@@ -66,7 +79,11 @@ const ModalEditItemEq4 = (props) => {
                                       onChange={(event) =>
                             setCode(event.target.value)}/>
                         <Form.Label>
-                            {errorCode ? <p className={s.error}>Введите 4 символа</p> : null}
+                            {errorCode ? (
+                                    props.type === 'participantType' ? (
+                                            <p className={s.error}>Введите не более {countSymbols} символов</p>
+                                        ) : (<p className={s.error}>Введите {countSymbols} символа</p>)
+                            ) : null}
                         </Form.Label>
                     </Form.Group>
 
@@ -99,8 +116,8 @@ const ModalEditItemEq4 = (props) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button type="submit" onClick={handleSubmit}>Сохранить изменения</Button>
-                <Button onClick={closeModal}>Отмена</Button>
+                <button className={s.btn_submit} type="submit" onClick={handleSubmit}>Сохранить изменения</button>
+                <button className={s.btn_cancel} onClick={closeModal}>Отмена</button>
             </Modal.Footer>
         </Modal>
     );

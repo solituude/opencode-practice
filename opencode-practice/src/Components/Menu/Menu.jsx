@@ -17,7 +17,7 @@ import downloadIcon from "../../img/downloadIcon.svg";
 import folderOpenIcon from "../../img/folderOpen.svg";
 import folderCloseIcon from "../../img/folderClose.svg";
 import s from "../Header/header.module.scss";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const Menu = () => {
     const directories = [

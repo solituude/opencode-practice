@@ -12,12 +12,6 @@ const ModalNewItemEq4 = (props) => {
     const [name, setName] = useState("");
     const [validityStart, setValidityStart] = useState("");
     const [validityEnd, setValidityEnd] = useState("");
-    // const [createdAt, setCreatedAt] = useState("");
-    // const [createdBy, setCreatedBy] = useState("");
-    // const [updatedAt, setUpdatedAt] = useState("");
-    // const [updatedBy, setUpdatedBy] = useState("");
-
-
     const [errorCode, setErrorCode] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorDate, setErrorDate] = useState(false);
@@ -27,17 +21,13 @@ const ModalNewItemEq4 = (props) => {
         setName("");
         setValidityStart("");
         setValidityEnd("");
-        // setCreatedAt("");
-        // setCreatedBy("");
-        // setUpdatedAt("");
-        // setUpdatedBy("");
     }
 
     const handleSubmit = () => {
         setErrorCode(false);
         setErrorName(false);
         setErrorDate(false);
-        if (!isCodeEq4Valid(code)) {
+        if (!isCodeEq4Valid(code, props.type)) {
             setErrorCode(true);
         }
         if (!isDataSet(name)) {
@@ -68,6 +58,20 @@ const ModalNewItemEq4 = (props) => {
         props.onHide();
     }
 
+    let countSymbols;
+    switch (props.type){
+        case 'participantType':
+            countSymbols = 2;
+            break
+        case 'availableServices':
+            countSymbols = 1;
+            break
+        case 'exchangeParticipant':
+            countSymbols = 1;
+            break
+        default:
+            countSymbols = 4;
+    }
 
 
     return (
@@ -91,7 +95,11 @@ const ModalNewItemEq4 = (props) => {
                             setErrorCode(false);
                         }}/>
                         <Form.Label>
-                            {errorCode ? <p className={s.error}>Введите 4 символа</p> : null}
+                            {errorCode ? (
+                                props.type === 'participantType' ? (
+                                    <p className={s.error}>Введите не более {countSymbols} символов</p>
+                                ) : (<p className={s.error}>Введите {countSymbols} символ(а)</p>)
+                            ) : null}
                         </Form.Label>
 
                     </Form.Group>

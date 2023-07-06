@@ -8,8 +8,6 @@ import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import UpdateRoundedIcon from "@mui/icons-material/UpdateRounded";
 import {message} from "antd";
 
-// статус участника
-
 const Directory = (props) => {
     const type = props.type;
     console.log(type);
@@ -139,7 +137,8 @@ const Directory = (props) => {
                     <ModalNewItemEq4
                         setNewDate={handleAddNewItem}
                         show={modalShow}
-                        type="accountStatus"
+                        // type="accountStatus"
+                        type={type}
                         onHide={() => setModalShow(false)}/>
                 </Row>
                 <Row>

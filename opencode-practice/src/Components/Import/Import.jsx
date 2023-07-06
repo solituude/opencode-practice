@@ -11,7 +11,7 @@ import Loader from "../UI/loader";
 import {message} from "antd";
 
 
-const Import = (props) => {
+const Import = () => {
     const [name, setName] = useState("");
     const [dateStart, setDateStart] = useState("");
     const [dateEnd, setDateEnd] = useState("");
@@ -241,8 +241,7 @@ const Import = (props) => {
                                 {nameColumns.map((item) => (
                                     <th className={s.file__table__col}>{item.name}</th>
                                 ))}
-                                <th className={s.file__table__col}></th>
-                                <th className={s.file__table__col}></th>
+                                <th className={s.file__table__col} colSpan={2}></th>
                             </tr>
                             </thead>
 
@@ -251,7 +250,7 @@ const Import = (props) => {
                                 data.length === 0 ? (<tr>
                                     <td colSpan={19}>Данные не найдены</td>
                                 </tr>) : (
-                                    data.map((item, index) => (
+                                    data.map((item) => (
                                         <tr>
                                             <td>{item.id}</td>
                                             <td>{item.fileName}</td>

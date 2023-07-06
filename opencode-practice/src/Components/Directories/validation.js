@@ -1,5 +1,13 @@
-export const isCodeEq4Valid = (code) => {
-    return code.length === 4;
+export const isCodeEq4Valid = (code, type) => {
+    switch (type){
+        case 'participantType':
+            return code.length <= 2;
+        case 'availableServices':
+        case 'exchangeParticipant':
+            return code.length === 1;
+        default:
+            return code.length === 4;
+    }
 }
 
 export const isDataSet = (data) => {
