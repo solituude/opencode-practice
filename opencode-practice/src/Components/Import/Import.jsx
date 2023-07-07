@@ -10,6 +10,7 @@ import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
 import {message} from "antd";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 
 
 const Import = () => {
@@ -29,25 +30,25 @@ const Import = () => {
     const password = 'password';
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+    headers.append('Content-Type', 'application/json');
 
-    const [params, setParams] = useState({});
 
     useEffect(() => {
         getData();
     }, [])
 
     const handleSetDateStart = (event) => {
-        setDateStart(event.target.value.toString());
+        setDateStart(event.target.value);
         console.log(dateStart);
     }
 
     const handleSetDateEnd = (event) => {
-        setDateEnd(event.target.value.toString());
+        setDateEnd(event.target.value);
         console.log(dateEnd);
     }
 
     const handleSetName = (event) => {
-        setName(event.target.value.toString());
+        setName(event.target.value);
     }
 
     const cleanFields = () => {
@@ -134,19 +135,30 @@ const Import = () => {
         fileInputRef.current.click();
     };
 
-    const handleSearch = async (obj) => {
+    const [isShowFilter, setIsShowFilter] = useState(false);
+
+    const handleSearch = async (params) => {
         try {
-            let response = await fetch(`/api/ed807/filter`, {
-                method: 'GET',
+            let response = await fetch('/api/ed807/filter', {
+                method: 'POST',
                 headers: headers,
-                body: obj
+                body: JSON.stringify(params)
             });
+            console.log(params)
             let data = await response.json();
             console.log('DATA FROM SEARCH', data);
+            setIsShowFilter(true);
             setData(data);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const showAllFiles = () => {
+        setIsShowFilter(false);
+        setIsLoading(true);
+        setName("");
+        getData();
     }
 
     const [visibleButton, setVisibleButton] = useState(true);
@@ -190,6 +202,15 @@ const Import = () => {
             <>
                 {contextHolder}
                 <Container className={s.container} fluid>
+                    {
+                        isShowFilter ?
+                            <Row className={s.action__field}>
+                                <button className={s.action__field__btn} onClick={showAllFiles}>
+                                    <ArrowBackRoundedIcon/>
+                                    Назад ко всем записям
+                                </button>
+                            </Row> : null
+                    }
                     <Row className={s.searches__container}>
                         <Col>
                             <label className={s.name__search}>
@@ -197,7 +218,7 @@ const Import = () => {
                                 <div className={s.name__search__textarea}>
                                     <input type="text"
                                            value={name}
-                                           onChange={handleSetName}
+                                           onChange={(event) => setName(event.target.value)}
                                            className={s.textarea}/>
                                     <CloseButton onClick={() => setName("")}/>
                                 </div>
@@ -209,7 +230,7 @@ const Import = () => {
                                 Дата загрузки с:
                                 <div className={s.date__search__textarea}>
                                     <input type="date"
-                                           onChange={handleSetDateStart}
+                                           onChange={(event) => setDateStart(event.target.value)}
                                            className={s.textarea}/>
                                 </div>
                             </label>
@@ -218,12 +239,13 @@ const Import = () => {
                                 по
                                 <div className={s.date__search__textarea}>
                                     <input type="date"
-                                           onChange={handleSetDateEnd}
+                                           onChange={(event) => setDateEnd(event.target.value)}
                                            className={s.textarea}/>
                                 </div>
                             </label>
 
                             <button className={s.search__btn} onClick={() => {
+                                let params = {};
                                 if (name.length !== 0) {
                                     params.title = name;
                                 }
@@ -233,9 +255,8 @@ const Import = () => {
                                 if (dateEnd.length !== 0) {
                                     params.date2 = dateEnd;
                                 }
-                                const queryString = new URLSearchParams(params).toString();
-                                console.log(params);
-                                queryString.length === 0 ? message.info(`Введите значение для поиска`) : handleSearch(params);
+                                Object.entries(params).length === 0 ? message.info(`Введите значение для поиска`)
+                                    : handleSearch(params);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>

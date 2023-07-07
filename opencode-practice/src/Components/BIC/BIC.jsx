@@ -110,6 +110,8 @@ const BIC = () => {
     const [rstrList, setRstrList] = useState({});
     const [swbics, setSwbics] = useState([]);
 
+    const [isShowFilter, setIsShowFilter] = useState(false);
+
 
     const handleOpenSubTable = (payerId) => {
         getAccounts(payerId)
@@ -185,9 +187,15 @@ const BIC = () => {
             let data = await response.json();
             console.log('DATA FROM SEARCH', data);
             setDataBIC(data);
+            setIsShowFilter(true);
         } catch (error) {
             console.log(error.message);
         }
+    }
+
+    const showAllBICs = () => {
+        setIsShowFilter(false);
+        getData(1);
     }
 
 
@@ -199,10 +207,16 @@ const BIC = () => {
                 ) :
                 (<Container className={s.container} fluid>
                     <Row className={s.return__back}>
-                        <button className={s.return__back__btn} onClick={goBack}>
-                            <ArrowBackRoundedIcon/>
-                            Назад
-                        </button>
+
+                        {
+                            isShowFilter ? (<button className={s.return__back__btn} onClick={() => showAllBICs()}>
+                                <ArrowBackRoundedIcon/>
+                                Назад ко всем записям
+                            </button>) : <button className={s.return__back__btn} onClick={goBack}>
+                                <ArrowBackRoundedIcon/>
+                                Назад к Импорту
+                            </button>
+                        }
                     </Row>
 
                     <Row className={s.searches__container} xs={4}>
@@ -316,42 +330,52 @@ const BIC = () => {
                             </tbody>
                         </Table>
                     </Row>
-
-                    <Row className={s.pagination}>
-                        {
-                            page === 1 ? (null) : (
-                                <button className={s.pagination__btn} onClick={() => {
-                                    // setLastElem(lastElem - countBicPerPage)
-                                    setPage(page-1);
-                                    getData(page-1);
-                                }}>
-                                    <ArrowBackRoundedIcon/>
-                                </button>
-                            )
-                        }
-                        <span className={s.pagination__text}>Страница</span>
-                        <input className={s.pagination__input} value={page} pattern="[1-9]+"
-                               onChange={(e) => {
-                                   setPage(Number(e.target.value) )
-                                   getData(Number(e.target.value) );
-                               }}/>
-                        <span className={s.pagination__text}>
-                            из {Math.floor(count / countBicPerPage) + 1}
-                        </span>
-                        {
-                            page === (Math.floor(count / countBicPerPage) + 1) ? (null) : (
-                                <button className={s.pagination__btn} onClick={() => {
-                                    setPage(page + 1);
-                                    getData(page + 1);
-                                }}>
-                                    <ArrowForwardRoundedIcon/>
-                                </button>
-                            )
-                        }
-                        <span className={s.pagination__text2} style={{right: 0}}>
+                    {
+                        isShowFilter ? (
+                            <Row className={s.pagination}>
+                                Найдено записей: {dataBIC.length}
+                            </Row>
+                        ) : (
+                            <Row className={s.pagination}>
+                                {
+                                    page === 1 ? (null) : (
+                                        <button className={s.pagination__btn} onClick={() => {
+                                            // setLastElem(lastElem - countBicPerPage)
+                                            setPage(page - 1);
+                                            getData(page - 1);
+                                        }}>
+                                            <ArrowBackRoundedIcon/>
+                                        </button>
+                                    )
+                                }
+                                <span className={s.pagination__text}>Страница</span>
+                                <input className={s.pagination__input} value={page}
+                                       onChange={(e) => {
+                                           if (Number(e.target.value) >= 0 && Number(e.target.value) <= (Math.floor(count / countBicPerPage) + 1)) {
+                                               setPage(Number(e.target.value))
+                                               getData(Number(e.target.value))
+                                           } else {
+                                               setPage(Math.floor(count / countBicPerPage) + 1);
+                                               getData(Math.floor(count / countBicPerPage) + 1);
+                                           }
+                                       }}/>
+                                <span className={s.pagination__text}>
+                            из {Math.floor(count / countBicPerPage) + 1}</span>
+                                {
+                                    page === (Math.floor(count / countBicPerPage) + 1) ? (null) : (
+                                        <button className={s.pagination__btn} onClick={() => {
+                                            setPage(page + 1);
+                                            getData(page + 1);
+                                        }}>
+                                            <ArrowForwardRoundedIcon/>
+                                        </button>
+                                    )
+                                }
+                                <span className={s.pagination__text2} style={{right: 0}}>
                             Всего записей {count}
                         </span>
-                    </Row>
+                            </Row>)
+                    }
                 </Container>)
             }
         </>

@@ -131,11 +131,11 @@ td {
 }
 
 .action__field {
-  height: 24px;
+  //height: 24px;
   background: #CECEE4;
   display: flex;
   flex-direction: row;
-  padding: 0 16px;
+  padding: 2px 16px;
   gap: 24px;
 
   &__btn {
@@ -150,7 +150,7 @@ td {
     &:hover {
       background: #b6b6ce;
       color: #303752;
-      border-radius: 4px;
+      border-radius: 6px;
     }
   }
 }

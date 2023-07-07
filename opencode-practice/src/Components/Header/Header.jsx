@@ -34,7 +34,7 @@ const renderPathname = (location) => {
         case '/':
             return <p className={s.pathname}>Импорт</p>
         default:
-            return <p className={s.pathname}>Таблица БИК</p>
+            return <p className={s.pathname}>Справочник БИК</p>
     }
 }
 

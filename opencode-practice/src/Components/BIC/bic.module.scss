@@ -166,6 +166,7 @@ td {
   margin-top: 52px;
   position: fixed;
   width: 100vw;
+  gap: 20px;
   background: #CECEE4;
   display: flex;
   padding: 4px 36px;
@@ -244,6 +245,7 @@ td {
     text-align: center;
     border: 0;
     border-radius: 4px;
+    -webkit-appearance: none;
   }
 }
 
