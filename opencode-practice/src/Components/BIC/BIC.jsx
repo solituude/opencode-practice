@@ -45,7 +45,7 @@ const BIC = () => {
 
     const [page, setPage] = useState(1);
 
-    const [lastElem, setLastElem] = useState(0);
+    // const [lastElem, setLastElem] = useState(0);
     const [messageApi, contextHolder] = message.useMessage();
 
     const navigate = useNavigate();
@@ -57,25 +57,28 @@ const BIC = () => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
 
+    const headers2 = headers;
+    headers2.append('Content-Type', 'application/json');
+
     const goBack = () => {
         navigate(-1);
     };
 
-    let getData = async (lastElement) => {
-        try {
-            let response = await fetch(`/api/bics/payers?msgId=${id}&bicId=${lastElement}`, {
-                method: 'GET',
-                headers: headers
-            });
+    let getData = async (page) => {
+        if (page >= 1) {
+            try {
+                let response = await fetch(`/api/bics/payers?msgId=${id}&page=${page - 1}`, {
+                    method: 'GET',
+                    headers: headers
+                });
 
-            let data = await response.json();
-            console.log('DATA:', data);
-            setDataBIC(data);
-            setLastElem(data[data.length - 1].payerId);
-            console.log(lastElem)
-            setIsLoading(false);
-        } catch (e) {
-            console.log(e.message);
+                let data = await response.json();
+                console.log('DATA:', data.content);
+                setDataBIC(data.content);
+                setIsLoading(false);
+            } catch (e) {
+                console.log(e.message);
+            }
         }
     }
 
@@ -97,7 +100,7 @@ const BIC = () => {
 
 
     useEffect(() => {
-        getData(lastElem);
+        getData(page);
     }, []);
 
 
@@ -171,13 +174,14 @@ const BIC = () => {
         }
     }
 
-    const handleSearch = async (url) => {
+    const handleSearch = async (params) => {
         try {
-            let response = await fetch(url, {
-                method: 'GET',
-                headers: headers
+            let response = await fetch('/api/bics/filter', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(params)
             });
-            console.log(url);
+            // console.log(url);
             let data = await response.json();
             console.log('DATA FROM SEARCH', data);
             setDataBIC(data);
@@ -238,21 +242,23 @@ const BIC = () => {
                                 </div>
                             </label>
                             <button className={s.search__btn} onClick={() => {
-                                let isOnly = true;
-                                let url = '/api/bics/filter?';
+                                let params = {};
                                 if (BIC.length !== 0) {
-                                    url += `bic=${BIC}`;
-                                    isOnly = false;
+                                    params.bic = BIC;
+                                    params.msgId = Number(id);
                                 }
                                 if (name.length !== 0) {
-                                    isOnly ? (url += `nameP=${name}`) : (url += `&nameP=${name}`);
-                                    isOnly = false;
+                                    params.nameP = name;
+                                    params.msgId = Number(id);
                                 }
                                 if (type.length !== 0) {
-                                    isOnly ? (url += `ptType=${type}`) : (url += `&ptType=${type}`);
+                                    params.ptType = type;
+                                    params.msgId = Number(id);
                                 }
-                                url === '/api/bics/filter?' ? message.info(`Введите значение для поиска`) :
-                                    handleSearch(url + `&msgId=${id}`);
+                                console.log(params)
+
+                                Object.entries(params).length === 0 ? message.info(`Введите значение для поиска`) :
+                                    handleSearch(params);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -315,19 +321,19 @@ const BIC = () => {
                         {
                             page === 1 ? (null) : (
                                 <button className={s.pagination__btn} onClick={() => {
-                                    setLastElem(lastElem - countBicPerPage)
-                                    setPage(page - 1);
-                                    getData(lastElem - countBicPerPage * 2);
+                                    // setLastElem(lastElem - countBicPerPage)
+                                    setPage(page-1);
+                                    getData(page-1);
                                 }}>
                                     <ArrowBackRoundedIcon/>
                                 </button>
                             )
                         }
                         <span className={s.pagination__text}>Страница</span>
-                        <input className={s.pagination__input} value={page}
+                        <input className={s.pagination__input} value={page} pattern="[1-9]+"
                                onChange={(e) => {
-                                   setPage(Number(e.target.value))
-                                   getData((e.target.value - page - 2) * 25 + lastElem);
+                                   setPage(Number(e.target.value) )
+                                   getData(Number(e.target.value) );
                                }}/>
                         <span className={s.pagination__text}>
                             из {Math.floor(count / countBicPerPage) + 1}
@@ -336,7 +342,7 @@ const BIC = () => {
                             page === (Math.floor(count / countBicPerPage) + 1) ? (null) : (
                                 <button className={s.pagination__btn} onClick={() => {
                                     setPage(page + 1);
-                                    getData(lastElem);
+                                    getData(page + 1);
                                 }}>
                                     <ArrowForwardRoundedIcon/>
                                 </button>

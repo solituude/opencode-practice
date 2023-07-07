@@ -21,7 +21,7 @@ const Import = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedFileName, setSelectedFileName] = useState('');
-    const [selectefFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState();
 
     const [messageApi, contextHolder] = message.useMessage();
     const fileInputRef = useRef(null);
