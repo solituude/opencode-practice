@@ -11,9 +11,8 @@ import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
 import {message} from "antd";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Modal from "react-bootstrap/Modal";
-import Form from 'react-bootstrap/Form';
 import ModalImport from "./ModalImport";
+import Pagination from "./Pagination";
 
 
 const Import = () => {
@@ -31,9 +30,6 @@ const Import = () => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
     headers.append('Content-Type', 'application/json');
-
-    // const headersUpload = new Headers();
-    // headersUpload.append('Authorization', 'Basic ' + btoa(username + ':' + password));
 
     useEffect(() => {
         getData();
@@ -94,24 +90,27 @@ const Import = () => {
         }
     }
 
-    const handleBrowseClick = () => {
-        fileInputRef.current.click();
-    };
-
     const [isShowFilter, setIsShowFilter] = useState(false);
+    const [currPage, setCurrPage] = useState(1);
+    const [totalElements, setTotalElements] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [parameters, setParameters] = useState({});
 
-    const handleSearch = async (params) => {
+    const handleSearch = async (params, page) => {
         try {
-            let response = await fetch('/api/ed807/filter', {
+            let response = await fetch(`/api/ed807/filter?page=${page-1}`, { //сделать нормально
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(params)
             });
             console.log(params)
             let data = await response.json();
-            console.log('DATA FROM SEARCH', data);
+            console.log('DATA FROM SEARCH', data.content);
             setIsShowFilter(true);
-            setData(data);
+            setParameters(params)
+            setTotalElements(data.totalElements);
+            setTotalPages(data.totalPages);
+            setData(data.content);
         } catch (error) {
             console.log(error);
         }
@@ -129,7 +128,7 @@ const Import = () => {
     const handleActualization = async () => {
         setIsLoading(true);
         try {
-            let response = await fetch('/api/ed807/actualization', {
+            await fetch('/api/ed807/actualization', {
                 method: 'GET',
                 headers: headers
             });
@@ -218,7 +217,7 @@ const Import = () => {
                                     params.date2 = dateEnd;
                                 }
                                 Object.entries(params).length === 0 ? message.info(`Введите значение для поиска`)
-                                    : handleSearch(params);
+                                    : handleSearch(params, 1);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -295,6 +294,14 @@ const Import = () => {
                             </tbody>
                         </Table>
                     </Row>
+                    {
+                        isShowFilter ? <Pagination page={currPage}
+                                                   params={parameters}
+                                                   setPage={setCurrPage}
+                                                   getData={handleSearch}
+                                                   totalElements={totalElements}
+                                                   totalPages={totalPages}/> : null
+                    }
                 </Container>
             </>) : (<Loader isLoading={isLoading}/>)
         }</>
