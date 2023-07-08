@@ -11,6 +11,9 @@ import {NavLink} from "react-router-dom";
 import Loader from "../UI/loader";
 import {message} from "antd";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+import Modal from "react-bootstrap/Modal";
+import Form from 'react-bootstrap/Form';
+import ModalImport from "./ModalImport";
 
 
 const Import = () => {
@@ -21,9 +24,6 @@ const Import = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [selectedFileName, setSelectedFileName] = useState('');
-    const [selectedFile, setSelectedFile] = useState();
-
     const [messageApi, contextHolder] = message.useMessage();
     const fileInputRef = useRef(null);
     const username = 'user';
@@ -32,24 +32,12 @@ const Import = () => {
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
     headers.append('Content-Type', 'application/json');
 
+    // const headersUpload = new Headers();
+    // headersUpload.append('Authorization', 'Basic ' + btoa(username + ':' + password));
 
     useEffect(() => {
         getData();
     }, [])
-
-    const handleSetDateStart = (event) => {
-        setDateStart(event.target.value);
-        console.log(dateStart);
-    }
-
-    const handleSetDateEnd = (event) => {
-        setDateEnd(event.target.value);
-        console.log(dateEnd);
-    }
-
-    const handleSetName = (event) => {
-        setName(event.target.value);
-    }
 
     const cleanFields = () => {
         setName("");
@@ -72,31 +60,6 @@ const Import = () => {
         {name: "Пользователь",},
 
     ];
-
-    const handleFileSelect = async (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        setSelectedFileName(file.name);
-        console.log(file);
-
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('fileName', selectedFileName);
-        try {
-            let response = await fetch(`/api/ed807/upload`, {
-                method: 'POST',
-                headers: headers,
-                body: formData,
-            })
-            setIsLoading(true);
-            console.log('Ответ сервера:', response);
-            getData();
-            response.ok ? message.info(`Файл успешно добавлен`) : message.info(`Ошибка в загрузке файла`)
-
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-    }
 
     const handleDelete = async (ID, title) => {
         try {
@@ -170,7 +133,6 @@ const Import = () => {
                 method: 'GET',
                 headers: headers
             });
-            console.log(response.text());
             setVisibleButton(false);
             getData();
             setTimeout(() => {
@@ -181,6 +143,8 @@ const Import = () => {
         }
     }
 
+    const [showModal, setShowModal] = useState(false);
+
     let getData = async () => {
         try {
             let response = await fetch(`/api/ed807`, {
@@ -188,10 +152,8 @@ const Import = () => {
                 headers: headers
             });
             let data = await response.json();
-            console.log('DATA:', data);
             setData(data);
             setIsLoading(false);
-
         } catch (e) {
             console.log(e.message);
         }
@@ -268,12 +230,7 @@ const Import = () => {
                     </Row>
 
                     <Row className={s.action__field}>
-                        <button className={s.action__field__btn} onClick={handleBrowseClick}>
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleFileSelect}
-                                style={{display: 'none'}}/>
+                        <button className={s.action__field__btn} onClick={() => setShowModal(true)}>
                             <KeyboardDoubleArrowUpRoundedIcon/>
                             Импортировать
                         </button>
@@ -285,8 +242,10 @@ const Import = () => {
                                 </button>
                             ) : null
                         }
-
-
+                        <ModalImport getData={getData}
+                                     show={showModal}
+                                     setIsLoading={setIsLoading}
+                                     hide={() => setShowModal(false)}/>
                     </Row>
 
                     <Row className={s.file__content} xs={12}>
@@ -308,9 +267,9 @@ const Import = () => {
                                     data.map((item) => (
                                         <tr>
                                             <td>{item.id}</td>
-                                            <td>{item.fileName}</td>
+                                            <td>{item.title}</td>
                                             <td>{item.createdAt}</td>
-                                            <td><NavLink to={`/bics/${item.id}`}>{item.title}</NavLink></td>
+                                            <td><NavLink to={`/bics/${item.id}`}>{item.fileName}</NavLink></td>
                                             <td>{item.eddate}</td>
                                             <td>{item.edauthor}</td>
                                             <td>{item.edreceiver}</td>
