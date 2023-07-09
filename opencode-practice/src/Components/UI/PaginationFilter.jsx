@@ -4,7 +4,7 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import {Row} from "react-bootstrap";
 //
-const Pagination = (props) => {
+const PaginationFilter = (props) => {
     return(
         <Row className={s.pagination}>
             {
@@ -42,10 +42,10 @@ const Pagination = (props) => {
                 )
             }
             <span className={s.pagination__text2} style={{right: 0}}>
-                            Всего записей {props.totalElements}
+                            Найдено записей {props.totalElements}
                         </span>
         </Row>
     )
 }
 
-export default Pagination;
+export default PaginationFilter;

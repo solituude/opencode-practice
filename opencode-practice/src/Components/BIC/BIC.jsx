@@ -11,6 +11,8 @@ import Loader from "../UI/loader";
 import {message} from "antd";
 import {deepPurple} from "@mui/material/colors";
 import ExpandedTable from "./ExpandedTable";
+import PaginationFilter from "../UI/PaginationFilter";
+import Pagination from "../UI/Pagination";
 
 
 const BIC = () => {
@@ -56,9 +58,7 @@ const BIC = () => {
     const password = 'password';
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
-
-    const headers2 = headers;
-    headers2.append('Content-Type', 'application/json');
+    headers.append('Content-Type', 'application/json');
 
     const goBack = () => {
         navigate(-1);
@@ -176,9 +176,13 @@ const BIC = () => {
         }
     }
 
-    const handleSearch = async (params) => {
+    const [pageFilter, setPageFilter] = useState(1);
+    const [totalElementsFilter, setTotalElementsFilter] = useState(0);
+    const [totalPagesFilter, setTotalPagesFilter] = useState(0);
+    const [parameters, setParameters] = useState({});
+    const handleSearch = async (params, page) => {
         try {
-            let response = await fetch('/api/bics/filter', {
+            let response = await fetch(`/api/bics/filter?page=${page-1}`, {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(params)
@@ -186,7 +190,10 @@ const BIC = () => {
             // console.log(url);
             let data = await response.json();
             console.log('DATA FROM SEARCH', data);
-            setDataBIC(data);
+            setParameters(params)
+            setTotalElementsFilter(data.totalElements);
+            setTotalPagesFilter(data.totalPages);
+            setDataBIC(data.content);
             setIsShowFilter(true);
         } catch (error) {
             console.log(error.message);
@@ -272,7 +279,7 @@ const BIC = () => {
                                 console.log(params)
 
                                 Object.entries(params).length === 0 ? message.info(`Введите значение для поиска`) :
-                                    handleSearch(params);
+                                    handleSearch(params, 1);
                             }}>
                                 <img src={searchIcon} alt="поиск"/>
                             </button>
@@ -332,49 +339,14 @@ const BIC = () => {
                     </Row>
                     {
                         isShowFilter ? (
-                            <Row className={s.pagination}>
-                                Найдено записей: {dataBIC.length}
-                            </Row>
-                        ) : (
-                            <Row className={s.pagination}>
-                                {
-                                    page === 1 ? (null) : (
-                                        <button className={s.pagination__btn} onClick={() => {
-                                            // setLastElem(lastElem - countBicPerPage)
-                                            setPage(page - 1);
-                                            getData(page - 1);
-                                        }}>
-                                            <ArrowBackRoundedIcon/>
-                                        </button>
-                                    )
-                                }
-                                <span className={s.pagination__text}>Страница</span>
-                                <input className={s.pagination__input} value={page}
-                                       onChange={(e) => {
-                                           if (Number(e.target.value) >= 0 && Number(e.target.value) <= (Math.floor(count / countBicPerPage) + 1)) {
-                                               setPage(Number(e.target.value))
-                                               getData(Number(e.target.value))
-                                           } else {
-                                               setPage(Math.floor(count / countBicPerPage) + 1);
-                                               getData(Math.floor(count / countBicPerPage) + 1);
-                                           }
-                                       }}/>
-                                <span className={s.pagination__text}>
-                            из {Math.floor(count / countBicPerPage) + 1}</span>
-                                {
-                                    page === (Math.floor(count / countBicPerPage) + 1) ? (null) : (
-                                        <button className={s.pagination__btn} onClick={() => {
-                                            setPage(page + 1);
-                                            getData(page + 1);
-                                        }}>
-                                            <ArrowForwardRoundedIcon/>
-                                        </button>
-                                    )
-                                }
-                                <span className={s.pagination__text2} style={{right: 0}}>
-                            Всего записей {count}
-                        </span>
-                            </Row>)
+                            <PaginationFilter page={pageFilter}
+                                              setPage={setPageFilter}
+                                              getData={handleSearch}
+                                              totalElements={totalElementsFilter}
+                                              totalPages={totalPagesFilter}
+                                              params={parameters}/>
+                        ) : (<Pagination page={page} setPage={setPage} getData={getData} totalElements={count}/>)
+
                     }
                 </Container>)
             }

@@ -12,10 +12,9 @@ import Loader from "../UI/loader";
 import {message} from "antd";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ModalImport from "./ModalImport";
-import Pagination from "./Pagination";
-import Checkbox from '@mui/material/Checkbox';
-import {FormControlLabel} from "@mui/material";
+
 import Form from 'react-bootstrap/Form';
+import PaginationFilter from "../UI/PaginationFilter";
 
 
 
@@ -171,14 +170,14 @@ const Import = () => {
                 <Container className={s.container} fluid>
                     {
                         isShowFilter ?
-                            <Row className={s.action__field}>
+                            <Row className={s.return}>
                                 <button className={s.action__field__btn} onClick={showAllFiles}>
                                     <ArrowBackRoundedIcon/>
                                     Назад ко всем записям
                                 </button>
-                            </Row> : null
+                            </Row> : <Row className={s.return}></Row>
                     }
-                    <Row className={s.searches__container}>
+                    <Row className={s.searches__container1}>
                         <Col>
                             <label className={s.name__search}>
                                 Наименование:
@@ -233,7 +232,7 @@ const Import = () => {
                             </button>
                         </Col>
                     </Row>
-                    <Row className={s.searches__container}>
+                    <Row className={s.searches__container2}>
                         <Form>
                             <Form.Check type={'checkbox'} reverse>
                                 <Form.Check.Label>Искать удаленные: </Form.Check.Label>
@@ -314,12 +313,12 @@ const Import = () => {
                         </Table>
                     </Row>
                     {
-                        isShowFilter ? <Pagination page={currPage}
+                        isShowFilter ? <PaginationFilter page={currPage}
                                                    params={parameters}
                                                    setPage={setCurrPage}
                                                    getData={handleSearch}
                                                    totalElements={totalElements}
-                                                   totalPages={totalPages}/> : null
+                                                   totalPages={totalPages}/> : <Row className={s.footer}>Выберите файл для просмотра</Row>
                     }
                 </Container>
             </>) : (<Loader isLoading={isLoading}/>)
