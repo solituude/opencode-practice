@@ -13,6 +13,10 @@ import {message} from "antd";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ModalImport from "./ModalImport";
 import Pagination from "./Pagination";
+import Checkbox from '@mui/material/Checkbox';
+import {FormControlLabel} from "@mui/material";
+import Form from 'react-bootstrap/Form';
+
 
 
 const Import = () => {
@@ -20,6 +24,7 @@ const Import = () => {
     const [dateStart, setDateStart] = useState("");
     const [dateEnd, setDateEnd] = useState("");
     const [data, setData] = useState([]);
+    const [showDeleted, setShowDeleted] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -98,7 +103,8 @@ const Import = () => {
 
     const handleSearch = async (params, page) => {
         try {
-            let response = await fetch(`/api/ed807/filter?page=${page-1}`, { //сделать нормально
+            params.deleted = showDeleted;
+            let response = await fetch(`/api/ed807/filter?page=${page - 1}`, { //сделать нормально
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(params)
@@ -226,6 +232,19 @@ const Import = () => {
                                 <BackspaceOutlinedIcon/>
                             </button>
                         </Col>
+                    </Row>
+                    <Row className={s.searches__container}>
+                        <Form>
+                            <Form.Check type={'checkbox'} reverse>
+                                <Form.Check.Label>Искать удаленные: </Form.Check.Label>
+                                <Form.Check.Input checked={showDeleted}
+                                                  onChange={(event) => setShowDeleted(event.target.checked)}
+                                                  className={s.checkbox}
+                                                  type={'checkbox'} isValid/>
+                            </Form.Check>
+                        </Form>
+
+
                     </Row>
 
                     <Row className={s.action__field}>

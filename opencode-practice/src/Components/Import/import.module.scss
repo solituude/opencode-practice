@@ -159,4 +159,11 @@ a {
   color: #263970;
 }
 
+.checkbox{
+  border: #686794;
+  &:checked{
+    background-color: #686794 !important;
+    border: #686794;
+  }
+}
 
