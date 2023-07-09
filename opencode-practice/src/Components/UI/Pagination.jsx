@@ -4,7 +4,7 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import {Row} from "react-bootstrap";
 //
-const PaginationFilter = (props) => {
+const Pagination = (props) => {
     return(
         <Row className={s.pagination}>
             {
@@ -48,4 +48,4 @@ const PaginationFilter = (props) => {
     )
 }
 
-export default PaginationFilter;
+export default Pagination;

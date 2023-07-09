@@ -28,7 +28,7 @@ const Import = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [messageApi, contextHolder] = message.useMessage();
-    const fileInputRef = useRef(null);
+    // const fileInputRef = useRef(null);
     const username = 'user';
     const password = 'password';
     const headers = new Headers();
@@ -101,23 +101,25 @@ const Import = () => {
     const [parameters, setParameters] = useState({});
 
     const handleSearch = async (params, page) => {
-        try {
-            params.deleted = showDeleted;
-            let response = await fetch(`/api/ed807/filter?page=${page - 1}`, { //сделать нормально
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(params)
-            });
-            console.log(params)
-            let data = await response.json();
-            console.log('DATA FROM SEARCH', data.content);
-            setIsShowFilter(true);
-            setParameters(params)
-            setTotalElements(data.totalElements);
-            setTotalPages(data.totalPages);
-            setData(data.content);
-        } catch (error) {
-            console.log(error);
+        if (page >= 1) {
+            try {
+                params.deleted = showDeleted;
+                let response = await fetch(`/api/ed807/filter?page=${page - 1}`, { //сделать нормально
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(params)
+                });
+                console.log(params)
+                let data = await response.json();
+                console.log('DATA FROM SEARCH', data.content);
+                setIsShowFilter(true);
+                setParameters(params)
+                setTotalElements(data.totalElements);
+                setTotalPages(data.totalPages);
+                setData(data.content);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 

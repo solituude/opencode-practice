@@ -181,27 +181,33 @@ const BIC = () => {
     const [totalPagesFilter, setTotalPagesFilter] = useState(0);
     const [parameters, setParameters] = useState({});
     const handleSearch = async (params, page) => {
-        try {
-            let response = await fetch(`/api/bics/filter?page=${page-1}`, {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(params)
-            });
-            // console.log(url);
-            let data = await response.json();
-            console.log('DATA FROM SEARCH', data);
-            setParameters(params)
-            setTotalElementsFilter(data.totalElements);
-            setTotalPagesFilter(data.totalPages);
-            setDataBIC(data.content);
-            setIsShowFilter(true);
-        } catch (error) {
-            console.log(error.message);
+        if (page >= 1) {
+            try {
+                let response = await fetch(`/api/bics/filter?page=${page-1}`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(params)
+                });
+                // console.log(url);
+                let data = await response.json();
+                console.log('DATA FROM SEARCH', data);
+                setParameters(params)
+                setTotalElementsFilter(data.totalElements);
+                setTotalPagesFilter(data.totalPages);
+                setDataBIC(data.content);
+                setIsShowFilter(true);
+            } catch (error) {
+                console.log(error.message);
+            }
         }
+
     }
 
     const showAllBICs = () => {
         setIsShowFilter(false);
+        setName('');
+        setBIC('');
+        setType('');
         getData(1);
     }
 
