@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {CloseButton, Col, Row, Table, Container} from "react-bootstrap";
 import s from './import.module.scss';
 import searchIcon from '../../img/searchIcon.svg';
@@ -28,7 +28,7 @@ const Import = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [messageApi, contextHolder] = message.useMessage();
-    // const fileInputRef = useRef(null);
+
     const username = 'user';
     const password = 'password';
     const headers = new Headers();
@@ -143,7 +143,7 @@ const Import = () => {
             getData();
             setTimeout(() => {
                 setVisibleButton(true); // Показать кнопку через 10 секунд
-            }, 10000);
+            }, 1000);
         } catch (error) {
             console.log(error.message);
         }

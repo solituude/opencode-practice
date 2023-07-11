@@ -50,7 +50,7 @@ const Directory = (props) => {
         if (page >= 1){
             try {
                 params.deleted = showDeleted;
-                let response = await fetch(`/api/directories/filter/${type}?page=${page - 1}`, { //сделать нормально
+                let response = await fetch(`/api/directories/filter/${type}?page=${page - 1}`, {
                     method: 'POST',
                     headers: headersPost,
                     body: JSON.stringify(params)

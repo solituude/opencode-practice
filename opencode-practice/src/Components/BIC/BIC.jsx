@@ -5,7 +5,6 @@ import {CloseButton, Col, Container, Row} from "react-bootstrap";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import searchIcon from "../../img/searchIcon.svg";
 import s from './bic.module.scss';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Loader from "../UI/loader";
 import {message} from "antd";
@@ -41,18 +40,15 @@ const BIC = () => {
     const [name, setName] = useState("");
     const [BIC, setBIC] = useState("");
     const [type, setType] = useState("");
-
     const [dataBIC, setDataBIC] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
     const [page, setPage] = useState(1);
 
-    // const [lastElem, setLastElem] = useState(0);
+
     const [messageApi, contextHolder] = message.useMessage();
 
     const navigate = useNavigate();
     const {id} = useParams();
-    const countBicPerPage = 25;
 
     const username = 'user';
     const password = 'password';
@@ -96,14 +92,12 @@ const BIC = () => {
         }
     }
 
-    const [count, setCount] = useState(getCount);
-
 
     useEffect(() => {
         getData(page);
     }, []);
 
-
+    const [count, setCount] = useState(getCount);
     const [[key, isTableOpen], setIsTableOpen] = useState([undefined, false]);
     const [accounts, setAccounts] = useState([]);
 
@@ -111,7 +105,6 @@ const BIC = () => {
     const [swbics, setSwbics] = useState([]);
 
     const [isShowFilter, setIsShowFilter] = useState(false);
-
 
     const handleOpenSubTable = (payerId) => {
         getAccounts(payerId)
@@ -180,6 +173,7 @@ const BIC = () => {
     const [totalElementsFilter, setTotalElementsFilter] = useState(0);
     const [totalPagesFilter, setTotalPagesFilter] = useState(0);
     const [parameters, setParameters] = useState({});
+
     const handleSearch = async (params, page) => {
         if (page >= 1) {
             try {
@@ -210,7 +204,6 @@ const BIC = () => {
         setType('');
         getData(1);
     }
-
 
     return (
         <>

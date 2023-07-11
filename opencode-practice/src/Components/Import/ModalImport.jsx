@@ -43,10 +43,8 @@ const ModalImport = (props) => {
 
             } catch (error) {
                 setShowError(true);
-                // console.error('Ошибка:', error);
             }
         } else {
-            // console.log("загрузите файл")
             setShowError(true);
         }
 

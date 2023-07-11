@@ -1,6 +1,6 @@
-FROM node:alpine
-WORKDIR /app
+FROM node:latest
 EXPOSE 3000
-COPY ./ ./
+COPY package.json ./
+COPY . .
 RUN npm install
 CMD ["npm", "start"]
