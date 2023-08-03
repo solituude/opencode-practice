@@ -34,7 +34,7 @@ const Directory = (props) => {
     const [validityStart, setValidityStart] = useState('');
     const [validityEnd, setValidityEnd] = useState('')
 
-    //переменные для отображения всех лэлементов
+    //переменные для отображения всех элементов
     const [page, setPage] = useState(1);
     const [showDeleted, setShowDeleted] = useState(false);
     const [totalElements, setTotalElements] = useState(0);
@@ -150,7 +150,6 @@ const Directory = (props) => {
             console.log('DATA AFTER DELETE', data);
             getData(page);
             message.info(`Запись успешно удалена`)
-                // message.info(`Ошибка в изменении записи`)
         } catch (e) {
             console.log(e.message);
             message.info(`Запись успешно удалена`)
@@ -295,7 +294,6 @@ const Directory = (props) => {
                     <ModalNewItemEq4
                         setNewDate={handleAddNewItem}
                         show={modalShow}
-                        // type="accountStatus"
                         type={type}
                         onHide={() => setModalShow(false)}/>
                 </Row>

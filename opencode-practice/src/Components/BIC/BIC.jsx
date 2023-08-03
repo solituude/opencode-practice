@@ -182,7 +182,6 @@ const BIC = () => {
                     headers: headers,
                     body: JSON.stringify(params)
                 });
-                // console.log(url);
                 let data = await response.json();
                 console.log('DATA FROM SEARCH', data);
                 setParameters(params)
